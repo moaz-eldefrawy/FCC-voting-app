@@ -1,39 +1,104 @@
-// server.js
-// where your node app starts
-
-// init project
 var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var dbUrl = "mongodb://first:first@ds032887.mlab.com:32887/fcc-voting"
+
 var app = express();
 
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+//hadling requests 
+// wantedPolls >> are the polls that is requested from the funciton
+function getAllPolls(){ 
+  return new Promise(function(resolve, reject){
+    MongoClient.connect(dbUrl, function(err, db){
+      if(err) console.log("Unable to connecto to MongoDb");
+      else {
+        var pollsColl = db.collection('polls');
+        pollsColl.find().toArray(function(err, polls){
+          if(err) return {"err": err};
+          var pollsNames = [];
+          for(var i=0; i<polls.length; i++){
+            pollsNames.push(polls[i].name);
+          }
+          db.close();
+          //callback(pollsNames);
+          resolve(pollsNames);
+        })
+      }
+    });
+  })
+}
+function getMyPolls(){
+    return new Promise(function(resolve, reject){
+      MongoClient.connect(dbUrl, function(err, db){
+        if(err) console.log("error: " + err );
+        else {
+          var myPollsColl = db.collection('polls');
+        //  var person =
+        }
+      })
+    })
+}
+
+app.get('/polls', function(req, res){
+  var p = getAllPolls(req.url);
+  p.then(function(val){
+    res.render( 'index', {
+      pollsNames: val,
+      userAuth: false
+    });
+  })
+
+});
+app.get('/', function(req, res){
+  var p = getAllPolls();
+  p.then(function(val){
+    res.render( 'index', {
+      pollsNames: val,
+      userAuth: false,
+    });
+  })
+
+});
+app.get("/mypolls", function(req,res){
+  res.render( 'mypolls');
+})
+app.get("/newpoll", function(req, res){
+  res.render( 'newpoll');
+})
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-app.get("/dreams", function (request, response) {
-  response.send(dreams);
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
-
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
-});
-
-// Simple in-memory store for now
-var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-
-// listen for requests :)
+ 
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
