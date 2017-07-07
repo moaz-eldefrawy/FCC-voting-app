@@ -58,7 +58,7 @@ app.get('/polls', function(req, res){
   p.then(function(val){
     res.render( 'index.pug', {
       pollsNames: val,
-      userAuth: false
+      userAuth: true
     });
   })
 
@@ -68,7 +68,7 @@ app.get('/', function(req, res){
   p.then(function(val){
     res.render( 'index.pug', {
       pollsNames: val,
-      userAuth: false,
+      userAuth: true,
     });
   })
 
