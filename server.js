@@ -74,7 +74,9 @@ app.get('/', function(req, res){
 
 });
 app.get("/mypolls", function(req,res){
-  res.render( 'mypolls');
+  res.render( 'mypolls', {
+    
+  });
 })
 app.get("/newpoll", function(req, res){
   res.render( 'newpoll');
