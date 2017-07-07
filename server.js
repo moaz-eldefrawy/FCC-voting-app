@@ -4,7 +4,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
-var dbUrl = "mongodb://first:first@ds032887.mlab.com:32887/fcc-voting"
+var dbUrl = process.env.DBURL;
+var passport = require('passport-twitter');
 
 var app = express();
 
@@ -81,6 +82,8 @@ app.get("/mypolls", function(req,res){
 app.get("/newpoll", function(req, res){
   res.render( 'newpoll');
 })
+
+app.get('/signup')
 
 
 // catch 404 and forward to error handler
