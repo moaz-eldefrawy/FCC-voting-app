@@ -56,7 +56,7 @@ function getMyPolls(){
 app.get('/polls', function(req, res){
   var p = getAllPolls(req.url);
   p.then(function(val){
-    res.render( 'index', {
+    res.render( 'index.pug', {
       pollsNames: val,
       userAuth: false
     });
@@ -66,7 +66,7 @@ app.get('/polls', function(req, res){
 app.get('/', function(req, res){
   var p = getAllPolls();
   p.then(function(val){
-    res.render( 'index', {
+    res.render( 'index.pug', {
       pollsNames: val,
       userAuth: false,
     });
