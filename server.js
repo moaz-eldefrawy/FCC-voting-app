@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var dbUrl = process.env.DBURL;
-var passport = require('passport-twitter');
+var Twitter = require('twitter');
 
 var app = express();
 
