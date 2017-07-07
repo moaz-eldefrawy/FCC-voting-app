@@ -1,0 +1,21 @@
+
+extends layout
+
+
+append content  
+  .container.content
+    h1 Fcc-Voting
+    if userName == 1
+      h3 Select a poll to see the results and vote, or sign-in to make a new poll.
+    else
+      h3 Select a poll to see the results and vote, or #[a(href="#") make a new poll!] 
+      
+    ul
+      each val in pollsNames
+        li.item #{val} 
+      else
+        li There are no Polls
+        
+
+    h5 #[b This "fcc-voting" app is built by #[a(href="https://github.com/moaz-eldefrawy", target="_blank") Moaz ELdefrawy]] 
+    

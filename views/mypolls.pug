@@ -1,0 +1,20 @@
+extends layout
+
+append content
+  - var polls = ['polls', 'asdafa', 'adad', 'asdafa', 'adad', 'asdafa']
+  .container.content
+    h1 Fcc-Voting
+    if !userAuth
+      h3 Select a poll to see the results and vote, or sign-in to make a new poll.
+    else
+      h3 Select a poll to see the results and vote, or #[a(href="#") make a new poll!]
+      
+    ul
+      each val in polls
+        li.item #{val}
+      else
+        li There are no values
+        
+
+    h5 #[b This "fcc-voting" app is built by #[a(href="https://github.com/moaz-eldefrawy", target="_blank") Moaz ELdefrawy]] 
+    

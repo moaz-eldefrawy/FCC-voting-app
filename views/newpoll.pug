@@ -1,0 +1,18 @@
+extends layout
+
+append content
+  link(rel='stylesheet', href='stylesheets/style2.css')
+  
+  .myForm
+    h1 Make a new Poll!
+    form
+      .input-group
+        label #[h4 Title:]
+        input.form-control(type="text")
+      .input-group
+        span #[h4 Options]
+        textarea.form-control(type="text" rows="5")
+      
+      input.btn.btn-info(type="submit" value="Make!" style="width: 100%")
+      
+      
