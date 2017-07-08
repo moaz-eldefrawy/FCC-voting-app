@@ -69,7 +69,7 @@ app.get('/polls', function(req, res){
 
 });
 //hompage
-app.get('/', function(req, res){
+app.all('/', function(req, res){
   var p = getAllPolls();
   p.then(function(val){
     res.render( 'index.pug', {
@@ -77,7 +77,7 @@ app.get('/', function(req, res){
       userAuth: false,
     });
   })
-
+  console.log(req.query);
 });
 app.get("/mypolls", function(req,res){
   res.render( 'mypolls', {
