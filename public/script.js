@@ -12,10 +12,9 @@ $(document).ready(function(){
       navLinks[i].className+=' active';
   }
 
-  // 
-  $("#signup").click(function(){
-    window.location = "https://youtube.com";
-    window.location.href = "https://youtube.com";
+  // handling sign up with twitter button
+  $("#signup").click(function(){ 
+    window.location.href = "https://fancy-thrill.glitch.me/request-token";
   })
 
 });
