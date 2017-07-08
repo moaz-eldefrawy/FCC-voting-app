@@ -20,7 +20,8 @@
     "passport-twitter": "^1.0.4",
     "twitter": "^1.7.1",
     "node-twitter-api": "^1.8.0",
-    "bluebird": "^3.5.0"
+    "bluebird": "^3.5.0",
+    "secret": "^1.0.2"
   },
   "engines": {
     "node": "8.1.x"

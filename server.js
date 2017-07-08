@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var dbUrl = process.env.DBURL;
-var Twitter = require('twitter');
+var Twitter = require("node-twitter-api");
 
 var app = express();
 
@@ -55,6 +55,9 @@ function getMyPolls(){
     })
 }
 
+// Handling Requests
+
+//hompage
 app.get('/polls', function(req, res){
   var p = getAllPolls(req.url);
   p.then(function(val){
@@ -65,6 +68,7 @@ app.get('/polls', function(req, res){
   })
 
 });
+//hompage
 app.get('/', function(req, res){
   var p = getAllPolls();
   p.then(function(val){
@@ -84,7 +88,16 @@ app.get("/newpoll", function(req, res){
   res.render( 'newpoll');
 })
 
-app.get('/signup')
+// handling sign up button
+var twitter = new Twitter({
+  consumerKey: process.env.CONSUMER_KEY,
+  consumerSecret: process.env.CONSUMER_SECRET,
+  callback: prcess.env.CALLBACK_URL
+})
+
+app.get('/request-token', function(){
+  
+})
 
 
 // catch 404 and forward to error handler
