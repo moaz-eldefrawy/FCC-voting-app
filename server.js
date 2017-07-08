@@ -125,7 +125,7 @@ app.all('/signup', function(req, res){
                         res.status(500).send(err);
                     else{
                       console.log(user);
-                        res.end("123");
+                      res.redirect('https://fancy-thrill.glitch.me');
                       
                     }
                 });
