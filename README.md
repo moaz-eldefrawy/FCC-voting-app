@@ -3,9 +3,22 @@
 
 db > AuthUsers :
 {
-  name: 
-  rurl:
-  polls:{
-  
+  name: -- 
+  url: --
+  Mypolls: {
+    
   }
+}
+
+Db > votes:
+{
+  PollName:
+  options: {
+    
+  }
+  voters:{
+    
+    Total: 
+  }
+  
 }

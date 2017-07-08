@@ -17,7 +17,7 @@ $(document).ready(function(){
        type: "get",
        success: function(data){
          if(data.userAuth == true){
-           
+             
          }
        }
      }) 
