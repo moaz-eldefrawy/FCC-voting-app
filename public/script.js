@@ -11,4 +11,7 @@ $(document).ready(function(){
   }
 
   // handling sign up with twitter button
- });
+  $("#signup").click(function(){
+    localStorage.id = 
+  })  
+});
