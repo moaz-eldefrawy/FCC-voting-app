@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  
+  // know the active button & adding an active call to it
   var windowUrl = window.location.href;
   var navLinks = $('nav li');
   navLinks.removeClass('active');
@@ -10,5 +12,6 @@ $(document).ready(function(){
       navLinks[i].className+=' active';
   }
 
+  
 
 });

@@ -18,7 +18,9 @@
     "pug": "^2.0.0-rc.2",
     "jade": "^1.11.0",
     "passport-twitter": "^1.0.4",
-    "twitter": "^1.7.1"
+    "twitter": "^1.7.1",
+    "node-twitter-api": "^1.8.0",
+    "bluebird": "^3.5.0"
   },
   "engines": {
     "node": "8.1.x"
