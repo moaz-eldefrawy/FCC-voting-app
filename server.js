@@ -59,7 +59,7 @@ app.get('/polls', function(req, res){
   p.then(function(val){
     res.render( 'index.pug', {
       pollsNames: val,
-      userAuth: true
+      userAuth: false
     });
   })
 
@@ -69,7 +69,7 @@ app.get('/', function(req, res){
   p.then(function(val){
     res.render( 'index.pug', {
       pollsNames: val,
-      userAuth: true,
+      userAuth: false,
     });
   })
 

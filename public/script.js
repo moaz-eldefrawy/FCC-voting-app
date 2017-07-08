@@ -12,6 +12,10 @@ $(document).ready(function(){
       navLinks[i].className+=' active';
   }
 
-  
+  // 
+  $("#signup").click(function(){
+    window.location = "https://youtube.com";
+    window.location.href = "https://youtube.com";
+  })
 
 });
