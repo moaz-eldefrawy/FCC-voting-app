@@ -89,14 +89,25 @@ app.get("/newpoll", function(req, res){
 })
 
 // handling sign up button
-var twitter = new Twitter({
-  consumerKey: process.env.CONSUMER_KEY,
-  consumerSecret: process.env.CONSUMER_SECRET,
-  callback: prcess.env.CALLBACK_URL
-})
 
-app.get('/request-token', function(){
+app.get('/request-token', function(req, res){
   
+  var twitter = new Twitter({
+    consumerKey: process.env.CONSUMER_KEY,
+    consumerSecret: process.env.CONSUMER_SECRET,
+    callback: process.env.CALLBACK_URL
+  })
+  
+  var _requestSecret;
+  twitter.getRequestToken(function(err, requestToken, requestSecret){
+    if(err)
+      res.status(500).send(err);
+    else {
+      _requestSecret = requestSecret;
+      res.redirect("https://api.twitter.com/oauth/authenticate?oauth_token=" + requestToken);
+    }
+      
+  })  
 })
 
 
