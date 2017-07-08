@@ -6,15 +6,9 @@ $(document).ready(function(){
   navLinks.removeClass('active');
   for(var i=0; i<navLinks.length; i++)
   {
-    console.log(navLinks[i].firstChild.href);
-    console.log(windowUrl);
     if(navLinks[i].firstChild.href == windowUrl)
       navLinks[i].className+=' active';
   }
 
   // handling sign up with twitter button
-  $("#signup").click(function(){ 
-    window.location.href = "https://fancy-thrill.glitch.me/request-token";
-  })
-
-});
+ });

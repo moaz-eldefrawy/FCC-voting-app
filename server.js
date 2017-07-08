@@ -99,11 +99,13 @@ app.get('/request-token', function(req, res){
   })
   
   var _requestSecret;
+  console.log("working")
   twitter.getRequestToken(function(err, requestToken, requestSecret){
     if(err)
       res.status(500).send(err);
     else {
       _requestSecret = requestSecret;
+      console.log(requestToken)
       res.redirect("https://api.twitter.com/oauth/authenticate?oauth_token=" + requestToken);
     }
       
