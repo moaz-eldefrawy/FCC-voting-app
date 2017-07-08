@@ -90,15 +90,16 @@ app.get("/newpoll", function(req, res){
 
 // handling sign up button
 
-app.get('/request-token', function(req, res){
-  
-  var twitter = new Twitter({
+var twitter = new Twitter({
     consumerKey: process.env.CONSUMER_KEY,
     consumerSecret: process.env.CONSUMER_SECRET,
     callback: process.env.CALLBACK_URL
   })
   
   var _requestSecret;
+app.get('/request-token', function(req, res){
+  
+  
   twitter.getRequestToken(function(err, requestToken, requestSecret){
     if(err)
       res.status(500).send(err);
@@ -112,9 +113,24 @@ app.get('/request-token', function(req, res){
 })
 // CALLBACK URL assigned to twitter 
 app.all('/signup', function(req, res){
-  console.log("signup working")
-  console.log(req.query)  
-  
+   var requestToken = req.query.oauth_token,
+      verifier = req.query.oauth_verifier;
+
+        twitter.getAccessToken(requestToken, _requestSecret, verifier, function(err, accessToken, accessSecret) {
+            if (err)
+                res.status(500).send(err);
+            else
+                twitter.verifyCredentials(accessToken, accessSecret, function(err, user) {
+                    if (err)
+                        res.status(500).send(err);
+                    else{
+                      console.log(user);
+                        res.end("123");
+                      
+                    }
+                });
+        });
+   
 })
 
 
