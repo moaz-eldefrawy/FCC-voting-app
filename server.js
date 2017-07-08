@@ -99,7 +99,6 @@ app.get('/request-token', function(req, res){
   })
   
   var _requestSecret;
-  console.log("working")
   twitter.getRequestToken(function(err, requestToken, requestSecret){
     if(err)
       res.status(500).send(err);
@@ -110,6 +109,12 @@ app.get('/request-token', function(req, res){
     }
       
   })  
+})
+// CALLBACK URL assigned to twitter 
+app.all('/signup', function(req, res){
+  console.log("signup working")
+  console.log(req.query)  
+  
 })
 
 
