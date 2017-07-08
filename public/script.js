@@ -12,6 +12,14 @@ $(document).ready(function(){
 
   // handling sign up with twitter button
   $("#signup").click(function(){
-     $.get("") 
+     $.AJAX({
+       url: "https://fancy-thrill.glitch.me/API?getNextUrl=1",
+       type: "get",
+       success: function(data){
+         if(data.userAuth == true){
+           
+         }
+       }
+     }) 
   })  
 });
