@@ -148,7 +148,7 @@ app.all('/signup', function(req, res){
         });
    
 })
-
+var Userexis
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
