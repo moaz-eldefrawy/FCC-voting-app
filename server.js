@@ -80,7 +80,7 @@ var response = {}
 //hompage
 app.get('*', function(req, res, next){
   
-  console.log(response)
+  console.log("* outputed:" + response.userAuth)
    var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
     // getting user info
   var getUserInfo = isAuth(userIpAddr)  
@@ -92,17 +92,18 @@ app.get('*', function(req, res, next){
       response.userName = userInfo[0].name;  
       response.userAuth = true;
     }
+    
+    next()
   });
-  next()
 })
 
 app.get('/polls', function(req, res){
-  res.render('index', response)
+  res.render('index', response.userAuth)
   
 });
 //hompage
 app.all('/', function(req, res){
-  console.log("sending index file")
+  console.log("/ output:" + response.userAuth)
    res.render('index', response)
   
 });
@@ -133,7 +134,6 @@ app.get('/request-token', function(req, res){
       res.status(500).send(err);
     else {
       _requestSecret = requestSecret;
-      console.log(requestToken)
       res.redirect("https://api.twitter.com/oauth/authenticate?oauth_token=" + requestToken);
     }
       
@@ -157,21 +157,23 @@ app.all('/signup', function(req, res){
                         if(err) return console.log(err);
                         var usersColl = db.collection('verifiedUsers');
                         var ip = req.headers['x-forwarded-for'].split(',')[0];
-                        console.log(user.name)
                         // Handling sing in with twitter
                         usersColl.find({"name": user.name}).toArray(function (err, docs){
-                          console.log(docs.length)
                           if(!docs.length){ //frsit time to sign in with twitter
-                            usersColl.insert( {name: user.name, url: ip}, function(){db.close()} );
+                            usersColl.insert( {name: user.name, url: ip}, function(){db.close();
+                                                                                    res.redirect('https://fancy-thrill.glitch.me');
+                              
+                                                                                    } );
                           } else{ // not firt-time to sign in with twitter on the website
                             usersColl.update( {name: user.name}, {'$set': {url: ip} } , function(){
                               db.close();
+                              res.redirect('https://fancy-thrill.glitch.me');
+                              
                             });
                           }
+                          
                         })
                       })
-                      
-                      res.redirect('https://fancy-thrill.glitch.me');
                     }
                 });
         });
@@ -182,7 +184,6 @@ app.get('/signout', function(req, res, next){
      var usersColl = db.collection("verifiedUsers")
      usersColl.remove({name: response.userName}, function(){
        db.close();
-       response.userAuth = false;
        res.redirect('https://fancy-thrill.glitch.me')
      })
   })
