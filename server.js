@@ -97,15 +97,25 @@ app.all('/', function(req, res){
   console.log(req.query);
 });
 app.get("/mypolls", function(req,res){
+  // knowing if a user is logged in
   var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
-  console.log(userIpAddr);
+    // getting user info
   var getUserInfo = isAuth(userIpAddr)  
   getUserInfo.then(function(userInfo){
-    userName: userInfo.name,  
+    if(!userInfo.length){
+      res.render('mypolls', {
+        userAuth: false
+      })  
+    }
+    else{
+      res.render( 'mypolls', {
+        userName: userInfo[0].name,  
+        userAuth: true
+      })
+    }
   });
-  res.render( 'mypolls', {
-    
-  })
+  
+  // 
 })
 app.get("/newpoll", function(req, res){
   res.render( 'newpoll');
