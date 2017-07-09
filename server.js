@@ -79,6 +79,7 @@ var response = {}
 
 //hompage
 app.get('*', function(req, res, next){
+  console.log('authenticating ..')
    var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
     // getting user info
   var getUserInfo = isAuth(userIpAddr)  
@@ -91,24 +92,27 @@ app.get('*', function(req, res, next){
       response.userAuth = true;
     }
   });
+  next()
 })
 
 app.get('/polls', function(req, res){
-  
+  res.render('index', response)
   
 });
 //hompage
 app.all('/', function(req, res){
+  console.log("sending index file")
+   res.render('index', response)
   
 });
 app.get("/mypolls", function(req,res){
   // knowing if a user is logged in
- 
+    res.render('mypolls', response)
   
   // 
 })
 app.get("/newpoll", function(req, res){
-  res.render( 'newpoll');
+  res.render( 'newpoll', response);
 })
 
 // handling sign up button
@@ -172,7 +176,15 @@ app.all('/signup', function(req, res){
         });
    
 })
-var Userexis
+app.get('/signout', function(req, res, next){
+  MongoClient.connect(dbUrl, function(err, db){
+     var usersColl = db.collection("verifiedUsers")
+     usersColl.remove({name: response.userName}, function(){
+       re
+     })
+  })
+  
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
