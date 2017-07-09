@@ -59,6 +59,20 @@ function getMyPolls(){
     })
 }
 
+function isAuth(url){
+ 
+  return new Promise(function(resolve, reject){
+    MongoClient.connect(dbUrl, function(err, db){
+      var usersColl = db.collection("verifiedUsers");
+      usersColl.find({url: url}).toArray(function(err, docs){
+        resolve(docs);
+      })
+    })
+  })
+  
+  return true/false;
+}
+
 // Handling Requests
 //hompage
 app.get('/polls', function(req, res){
@@ -83,7 +97,13 @@ app.all('/', function(req, res){
   console.log(req.query);
 });
 app.get("/mypolls", function(req,res){
-    res.render( 'mypolls', {
+  var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
+  console.log(userIpAddr);
+  var getUserInfo = isAuth(userIpAddr)  
+  getUserInfo.then(function(userInfo){
+    userName: userInfo.name,  
+  });
+  res.render( 'mypolls', {
     
   })
 })
@@ -133,15 +153,13 @@ app.all('/signup', function(req, res){
                         var usersColl = db.collection('verifiedUsers');
                         var ip = req.headers['x-forwarded-for'].split(',')[0];
                         console.log(user.name)
+                        // Handling sing in with twitter
                         usersColl.find({"name": user.name}).toArray(function (err, docs){
                           console.log(docs.length)
                           if(!docs.length){ //frsit time to sign in with twitter
-                            console.log("err: " + err);
                             usersColl.insert( {name: user.name, url: ip}, function(){db.close()} );
-                          } else{
-                            console.log("exists : " + docs);
+                          } else{ // not firt-time to sign in with twitter on the website
                             usersColl.update( {name: user.name}, {'$set': {url: ip} } , function(){
-                              console.log("db closed") 
                               db.close();
                             });
                           }
