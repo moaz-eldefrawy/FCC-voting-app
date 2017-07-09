@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var dbUrl = process.env.DBURL;
-var Twitter = require("node-twitter-api");
+var twitterApi = require("node-twitter-api");
 
 var app = express();
 
@@ -60,7 +60,6 @@ function getMyPolls(){
 }
 
 // Handling Requests
-
 //hompage
 app.get('/polls', function(req, res){
   var p = getAllPolls(req.url);
@@ -98,13 +97,13 @@ app.get("/newpoll", function(req, res){
 
 // handling sign up button
 
-var twitter = new Twitter({
+var twitter = new twitterApi({
     consumerKey: process.env.CONSUMER_KEY,
     consumerSecret: process.env.CONSUMER_SECRET,
     callback: process.env.CALLBACK_URL
   })
   
-  var _requestSecret;
+var _requestSecret;
 app.get('/request-token', function(req, res){
   
   
@@ -123,7 +122,7 @@ app.get('/request-token', function(req, res){
 app.all('/signup', function(req, res){
    var requestToken = req.query.oauth_token,
       verifier = req.query.oauth_verifier;
-
+  
         twitter.getAccessToken(requestToken, _requestSecret, verifier, function(err, accessToken, accessSecret) {
             if (err)
                 res.status(500).send(err);
@@ -132,9 +131,18 @@ app.all('/signup', function(req, res){
                     if (err)
                         res.status(500).send(err);
                     else{
-                      console.log(user);
-                      res.redirect('https://fancy-thrill.glitch.me');
+                      // connecting to verifiedUsers Database
+                      MongoClient.connect(dbUrl, function(err, db){
+                        if(err) return console.log(err);
+                        var usersColl = db.collection('verifiedUsers');
+                        usersColl.insert({
+                          name: user.name,
+                          url: req.headers['x-forwarded-for'].split(",")[0]
+                        })
+                        db.close();
+                      })
                       
+                      res.redirect('https://fancy-thrill.glitch.me');
                     }
                 });
         });
