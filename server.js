@@ -73,8 +73,26 @@ function isAuth(url){
   return true/false;
 }
 
+var response = {}
+
 // Handling Requests
+
 //hompage
+app.get('*', function(req, res, next){
+   var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
+    // getting user info
+  var getUserInfo = isAuth(userIpAddr)  
+  getUserInfo.then(function(userInfo){
+    if(!userInfo.length){
+      response.userAuth = false; 
+    }
+    else{
+      response.userName = userInfo[0].name;  
+      response.userAuth = true;
+    }
+  });
+})
+
 app.get('/polls', function(req, res){
   
   
@@ -85,23 +103,7 @@ app.all('/', function(req, res){
 });
 app.get("/mypolls", function(req,res){
   // knowing if a user is logged in
-  var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
-    // getting user info
-  var getUserInfo = isAuth(userIpAddr)  
-  getUserInfo.then(function(userInfo){
-    if(!userInfo.length){
-      res.render('mypolls', {
-        userAuth: false
-      })  
-    }
-    else{
-      res.render( 'mypolls', {
-        userName: userInfo[0].name,  
-        userAuth: true
-      })
-    }
-    return 1;
-  });
+ 
   
   // 
 })
