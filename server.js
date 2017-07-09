@@ -86,11 +86,11 @@ app.all('/', function(req, res){
 app.get("/mypolls", function(req,res){
   var p = getMyPolls();
   p.then(function(data){
+    res.render( 'mypolls', {
+      polls: data  
+    });
     
   })
-  res.render( 'mypolls', {
-    polls: data
-  });
 })
 app.get("/newpoll", function(req, res){
   res.render( 'newpoll');
