@@ -1,7 +1,7 @@
 - use sign in with twitter >> take the req.rul
 - pass from a page to page with userAuth on. >> req.url is true.
 
-db > AuthUsers :
+db > verifiedUsers :
 {
   name: -- 
   url: --
@@ -10,7 +10,7 @@ db > AuthUsers :
   }
 }
 
-Db > votes:
+Db > polls:
 {
   PollName:
   options: {

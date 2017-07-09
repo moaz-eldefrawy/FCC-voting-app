@@ -36,7 +36,6 @@ function getAllPolls(){
             pollsNames.push(polls[i].name);
           }
           db.close();
-          //callback(pollsNames);
           resolve(pollsNames);
         })
       }
@@ -48,8 +47,13 @@ function getMyPolls(){
       MongoClient.connect(dbUrl, function(err, db){
         if(err) console.log("error: " + err );
         else {
-          var myPollsColl = db.collection('polls');
-        //  var person =
+          var myPollsColl = db.collection('verifiedUsers');
+          myPollsColl.find().toArray(function(err, docs){
+            if(err) return console.log("error: " + err);
+            var polls = docs.mypolls;
+            db.close();
+            resolve(polls);
+          })
         }
       })
     })
@@ -80,8 +84,12 @@ app.all('/', function(req, res){
   console.log(req.query);
 });
 app.get("/mypolls", function(req,res){
-  res.render( 'mypolls', {
+  var p = getMyPolls();
+  p.then(function(data){
     
+  })
+  res.render( 'mypolls', {
+    polls: data
   });
 })
 app.get("/newpoll", function(req, res){
