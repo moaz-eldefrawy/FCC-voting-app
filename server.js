@@ -131,16 +131,16 @@ app.all('/signup', function(req, res){
                       MongoClient.connect(dbUrl, function(err, db){
                         if(err) return console.log(err);
                         var usersColl = db.collection('verifiedUsers');
+                        var ip = req.headers['x-forwarded-for'].split(',')[0];
                         console.log(user.name)
                         usersColl.find({"name": user.name}).toArray(function (err, docs){
                           console.log(docs.length)
                           if(!docs.length){ //frsit time to sign in with twitter
                             console.log("err: " + err);
-                            var ip = req.headers['x-forwarded-for'].split(',')[0];
-                            usersColl.insert( {name: user.name, url: ip} );
+                            usersColl.insert( {name: user.name, url: ip}, function(){db.close()} );
                           } else{
                             console.log("exists : " + docs);
-                            usersColl.insert( {name: user.name, url: ip} , function(){
+                            usersColl.update( {name: user.name}, {'$set': {url: ip} } , function(){
                               console.log("db closed") 
                               db.close();
                             });
