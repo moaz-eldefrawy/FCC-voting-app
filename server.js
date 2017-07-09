@@ -76,25 +76,12 @@ function isAuth(url){
 // Handling Requests
 //hompage
 app.get('/polls', function(req, res){
-  var p = getAllPolls(req.url);
-  p.then(function(val){
-    res.render( 'index.pug', {
-      pollsNames: val,
-      userAuth: false
-    });
-  })
-
+  
+  
 });
 //hompage
 app.all('/', function(req, res){
-  var p = getAllPolls();
-  p.then(function(val){
-    res.render( 'index.pug', {
-      pollsNames: val,
-      userAuth: false,
-    });
-  })
-  console.log(req.query);
+  
 });
 app.get("/mypolls", function(req,res){
   // knowing if a user is logged in
@@ -113,6 +100,7 @@ app.get("/mypolls", function(req,res){
         userAuth: true
       })
     }
+    return 1;
   });
   
   // 
