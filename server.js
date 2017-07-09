@@ -83,11 +83,7 @@ app.all('/', function(req, res){
   console.log(req.query);
 });
 app.get("/mypolls", function(req,res){
-  var p = getMyPolls();
-  p.then(function(data){
     res.render( 'mypolls', {
-      polls: data  
-    });
     
   })
 })
@@ -136,15 +132,20 @@ app.all('/signup', function(req, res){
                         if(err) return console.log(err);
                         var usersColl = db.collection('verifiedUsers');
                         console.log(user.name)
-                        usersColl.find({name: user.name}).toArray(function (err, docs){
-                          if(err){ //frsit time to sign in with twitter
+                        usersColl.find({"name": user.name}).toArray(function (err, docs){
+                          console.log(docs.length)
+                          if(!docs.length){ //frsit time to sign in with twitter
+                            console.log("err: " + err);
                             var ip = req.headers['x-forwarded-for'].split(',')[0];
                             usersColl.insert( {name: user.name, url: ip} );
                           } else{
-                            usersColl.update( {name: user.name}, {$set: {url: req.url} } )
+                            console.log("exists : " + docs);
+                            usersColl.insert( {name: user.name, url: ip} , function(){
+                              console.log("db closed") 
+                              db.close();
+                            });
                           }
                         })
-                        db.close();
                       })
                       
                       res.redirect('https://fancy-thrill.glitch.me');
