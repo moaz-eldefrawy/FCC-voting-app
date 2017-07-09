@@ -135,9 +135,14 @@ app.all('/signup', function(req, res){
                       MongoClient.connect(dbUrl, function(err, db){
                         if(err) return console.log(err);
                         var usersColl = db.collection('verifiedUsers');
-                        usersColl.insert({
-                          name: user.name,
-                          url: req.headers['x-forwarded-for'].split(",")[0]
+                        console.log(user.name)
+                        usersColl.find({name: user.name}).toArray(function (err, docs){
+                          if(err){ //frsit time to sign in with twitter
+                            var ip = req.headers['x-forwarded-for'].split(',')[0];
+                            usersColl.insert( {name: user.name, url: ip} );
+                          } else{
+                            usersColl.update( {name: user.name}, {$set: {url: req.url} } )
+                          }
                         })
                         db.close();
                       })
