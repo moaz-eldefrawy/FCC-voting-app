@@ -79,7 +79,8 @@ var response = {}
 
 //hompage
 app.get('*', function(req, res, next){
-  console.log('authenticating ..')
+  
+  console.log(response)
    var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
     // getting user info
   var getUserInfo = isAuth(userIpAddr)  
@@ -180,7 +181,9 @@ app.get('/signout', function(req, res, next){
   MongoClient.connect(dbUrl, function(err, db){
      var usersColl = db.collection("verifiedUsers")
      usersColl.remove({name: response.userName}, function(){
-       re
+       db.close();
+       response.userAuth = false;
+       res.redirect('https://fancy-thrill.glitch.me')
      })
   })
   
