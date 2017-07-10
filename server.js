@@ -115,9 +115,16 @@ app.get("/mypolls", function(req,res){
 app.get("/newpoll", function(req, res){
   
   var ip = req.headers['x-forwarded-for'].split(',')[0];
-   console.log(req.body);
-  res.render( 'newpoll', app.get(ip));
-
+  console.log(req.query)
+  if(!Object.keys(req.query).length) // requesting the page
+    res.render( 'newpoll', app.get(ip));  
+  else{
+    console.log(req.query);
+    var options = req.query.options.split('\r');
+    console.log(options);
+    var pollName = req.query.name;
+    res.end()
+  }
 })
 
 
