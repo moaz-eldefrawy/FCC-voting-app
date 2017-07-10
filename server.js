@@ -74,7 +74,6 @@ function isAuth(url){
 }
 
 var response = {}
-
 // Handling Requests
 
 //hompage
@@ -160,12 +159,12 @@ app.all('/signup', function(req, res){
                         // Handling sing in with twitter
                         usersColl.find({"name": user.name}).toArray(function (err, docs){
                           if(!docs.length){ //frsit time to sign in with twitter
-                            usersColl.insert( {name: user.name, url: ip}, function(){db.close();
-                                                                                    res.redirect('https://fancy-thrill.glitch.me');
-                              
-                                                                                    } );
+                            usersColl.insert( {name: user.name, url: ip, connected: true}, function(){
+                              db.close();
+                              res.redirect('https://fancy-thrill.glitch.me');
+                            });
                           } else{ // not firt-time to sign in with twitter on the website
-                            usersColl.update( {name: user.name}, {'$set': {url: ip} } , function(){
+                            usersColl.update( {name: user.name}, {'$set': {url: ip, connected: true} } , function(){
                               db.close();
                               res.redirect('https://fancy-thrill.glitch.me');
                               
@@ -181,11 +180,9 @@ app.all('/signup', function(req, res){
 })
 app.get('/signout', function(req, res, next){
   MongoClient.connect(dbUrl, function(err, db){
-     var usersColl = db.collection("verifiedUsers")
-     usersColl.remove({name: response.userName}, function(){
-       db.close();
-       res.redirect('https://fancy-thrill.glitch.me')
-     })
+     var usersColl = db.collection("verifiedUsers");
+     var ip = req.headers['x-forwarded-for'].split(',')[0];                    
+     usersColl.find()
   })
   
 })
