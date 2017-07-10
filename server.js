@@ -113,6 +113,15 @@ app.get("/mypolls", function(req,res){
   
 })
 app.get("/newpoll", function(req, res){
+  function decodeOptions(str){
+    var result = [];
+    for(var i=0; i<str.length; i++){
+      if(str[i].length){
+        if(str[i])
+      }
+        
+    }
+  }
   
   var ip = req.headers['x-forwarded-for'].split(',')[0];
   console.log(req.query)
@@ -128,11 +137,6 @@ app.get("/newpoll", function(req, res){
 })
 
 
-app.get("/newpoll/submit", function(req,res){
-  var ip = req.headers['x-forwarded-for'].split(',')[0];
-  console.log(req.body);
-  res.end(123);
-})
 // handling sign up button
 
 var twitter = new twitterApi({
