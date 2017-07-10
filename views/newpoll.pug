@@ -5,7 +5,7 @@ append content
   
   .myForm
     h1 Make a new Poll!
-    form(action="newpoll/submit" method="post" enctype="multipart/form-data")
+    form(method="get")
       .input-group
         label #[h4 Title:]
         input.form-control(type="text", name="name")

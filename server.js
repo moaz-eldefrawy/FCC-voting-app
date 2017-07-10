@@ -115,9 +115,17 @@ app.get("/mypolls", function(req,res){
 app.get("/newpoll", function(req, res){
   
   var ip = req.headers['x-forwarded-for'].split(',')[0];
+   console.log(req.body);
   res.render( 'newpoll', app.get(ip));
+
 })
 
+
+app.get("/newpoll/submit", function(req,res){
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
+  console.log(req.body);
+  res.end(123);
+})
 // handling sign up button
 
 var twitter = new twitterApi({
