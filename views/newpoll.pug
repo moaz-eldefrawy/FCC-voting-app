@@ -5,13 +5,13 @@ append content
   
   .myForm
     h1 Make a new Poll!
-    form
+    form(action="newpoll/submit" method="post" enctype="multipart/form-data")
       .input-group
         label #[h4 Title:]
-        input.form-control(type="text")
+        input.form-control(type="text", name="name")
       .input-group
         span #[h4 Options]
-        textarea.form-control(type="text" rows="5" id="options")
+        textarea.form-control(type="text", rows="5", id="options", name="options")
       
       input.btn.btn-info(type="submit" value="Make!" style="width: 100%")
       
