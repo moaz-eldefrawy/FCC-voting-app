@@ -9,6 +9,7 @@ var twitterApi = require("node-twitter-api");
 
 var app = express();
 
+
 "user-strict";
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -73,14 +74,14 @@ function isAuth(url){
   return true/false;
 }
 
-var response = {}
 // Handling Requests
+
+
 
 //hompage
 app.get('*', function(req, res, next){
   
-  console.log("* outputed:" + response.userAuth)
-   var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
+  var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
     // getting user info
   var getUserInfo = isAuth(userIpAddr)  
   getUserInfo.then(function(userInfo){
@@ -169,8 +170,8 @@ app.all('/signup', function(req, res){
                               res.redirect('https://fancy-thrill.glitch.me');
                               
                             });
-                          }
-                          
+                            
+                          }                    
                         })
                       })
                     }
@@ -179,12 +180,16 @@ app.all('/signup', function(req, res){
    
 })
 app.get('/signout', function(req, res, next){
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
   MongoClient.connect(dbUrl, function(err, db){
-     var usersColl = db.collection("verifiedUsers");
-     var ip = req.headers['x-forwarded-for'].split(',')[0];                    
-     usersColl.find()
+    var usersColl = db.collection("verifiedUsers")
+    usersColl.update({url: ip}, {'$set': {connected: false}}, function(err){
+      if(err) return console.log(err);
+      db.close();
+      res.redirect('https://fancy-thrill.glitch.me');
+    })
+    
   })
-  
 })
 
 // catch 404 and forward to error handler
