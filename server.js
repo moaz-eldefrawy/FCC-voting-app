@@ -71,7 +71,7 @@ function isAuth(url){
     })
   })
   
-  return true/false;
+  return ;
 }
 
 // Handling Requests
