@@ -81,16 +81,12 @@ function isAuth(url){
 //hompage
 app.get('*', function(req, res, next){
   
-  var userIpAddr = req.headers['x-forwarded-for'].split(',')[0];
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
     // getting user info
-  var getUserInfo = isAuth(userIpAddr)  
+  var getUserInfo = isAuth(ip)  
   getUserInfo.then(function(userInfo){
-    if(!userInfo.length){
-      response.userAuth = false; 
-    }
-    else{
-      response.userName = userInfo[0].name;  
-      response.userAuth = true;
+    if(app.get(ip) == true){
+      app.set(ip, {userName: userInfo[0].name, userAuth: true});
     }
     
     next()
@@ -98,23 +94,28 @@ app.get('*', function(req, res, next){
 })
 
 app.get('/polls', function(req, res){
-  res.render('index', response.userAuth)
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
+  res.render('index', app.get(ip));
   
 });
 //hompage
 app.all('/', function(req, res){
-  console.log("/ output:" + response.userAuth)
-   res.render('index', response)
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
+  
+  res.render('index', app.get(ip))
   
 });
 app.get("/mypolls", function(req,res){
   // knowing if a user is logged in
-    res.render('mypolls', response)
+    
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
+  res.render('mypolls', app.get(ip))
   
-  // 
 })
 app.get("/newpoll", function(req, res){
-  res.render( 'newpoll', response);
+  
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
+  res.render( 'newpoll', app.get(ip));
 })
 
 // handling sign up button
@@ -159,19 +160,20 @@ app.all('/signup', function(req, res){
                         var ip = req.headers['x-forwarded-for'].split(',')[0];
                         // Handling sing in with twitter
                         usersColl.find({"name": user.name}).toArray(function (err, docs){
+                          app.set(ip, true);
                           if(!docs.length){ //frsit time to sign in with twitter
-                            usersColl.insert( {name: user.name, url: ip, connected: true}, function(){
+                            usersColl.insert( {name: user.name, url: ip}, function(){
                               db.close();
                               res.redirect('https://fancy-thrill.glitch.me');
                             });
                           } else{ // not firt-time to sign in with twitter on the website
-                            usersColl.update( {name: user.name}, {'$set': {url: ip, connected: true} } , function(){
+                            usersColl.update( {name: user.name}, {'$set': {url: ip} } , function(){
                               db.close();
                               res.redirect('https://fancy-thrill.glitch.me');
                               
                             });
                             
-                          }                    
+                          }
                         })
                       })
                     }
@@ -181,15 +183,8 @@ app.all('/signup', function(req, res){
 })
 app.get('/signout', function(req, res, next){
   var ip = req.headers['x-forwarded-for'].split(',')[0];
-  MongoClient.connect(dbUrl, function(err, db){
-    var usersColl = db.collection("verifiedUsers")
-    usersColl.update({url: ip}, {'$set': {connected: false}}, function(err){
-      if(err) return console.log(err);
-      db.close();
-      res.redirect('https://fancy-thrill.glitch.me');
-    })
-    
-  })
+  app.set(ip, false);
+  res.redirect('https://fancy-thrill.glitch.me')
 })
 
 // catch 404 and forward to error handler
