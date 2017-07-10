@@ -118,15 +118,12 @@ app.get("/newpoll", function(req, res){
     str.pop();
     for(var i=0; i<str.length; i++){
       var l = str[i].length 
-      if(l){
-        console.log(str[i][l-4])
-        if(str[i][l-2] == '/')
-          result.push( str[i].substring(0, l-3) )
-        else
-          result.push(str[i])
-      }
-        
+      console.log(str[i] + " " + l)
+      if(l != 1)
+        result.push(str[i])
+      
     }
+    
     return result;
   }
   
@@ -141,7 +138,7 @@ app.get("/newpoll", function(req, res){
     options = decodeOptions(options)
     console.log(options)
     var pollName = req.query.name;
-    res.end()
+    res.end(options[0].toString());
   }
 })
 
