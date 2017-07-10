@@ -115,12 +115,19 @@ app.get("/mypolls", function(req,res){
 app.get("/newpoll", function(req, res){
   function decodeOptions(str){
     var result = [];
+    str.pop();
     for(var i=0; i<str.length; i++){
-      if(str[i].length){
-        if(str[i])
+      var l = str[i].length 
+      if(l){
+        console.log(str[i][l-4])
+        if(str[i][l-2] == '/')
+          result.push( str[i].substring(0, l-3) )
+        else
+          result.push(str[i])
       }
         
     }
+    return result;
   }
   
   var ip = req.headers['x-forwarded-for'].split(',')[0];
@@ -129,8 +136,10 @@ app.get("/newpoll", function(req, res){
     res.render( 'newpoll', app.get(ip));  
   else{
     console.log(req.query);
-    var options = req.query.options.split('\r');
+    var options = req.query.options.split('\n');
     console.log(options);
+    options = decodeOptions(options)
+    console.log(options)
     var pollName = req.query.name;
     res.end()
   }
