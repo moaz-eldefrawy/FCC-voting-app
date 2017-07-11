@@ -66,6 +66,9 @@ function isAuth(url){
     MongoClient.connect(dbUrl, function(err, db){
       var usersColl = db.collection("verifiedUsers");
       usersColl.find({url: url}).toArray(function(err, docs){
+        
+        db.close()
+        console.log('db closed')
         resolve(docs);
       })
     })
@@ -80,11 +83,13 @@ function isAuth(url){
 
 //hompage
 app.get('*', function(req, res, next){
-  
+  console.log('somthing ounfd')
   var ip = req.headers['x-forwarded-for'].split(',')[0];
     // getting user info
   var getUserInfo = isAuth(ip)  
+  console.log(getUserInfo)
   getUserInfo.then(function(userInfo){
+    console.log(userInfo[0].url + " " + ip)
     if(userInfo[0].url == ip){
       app.set(ip, {userName: userInfo[0].name, userAuth: true});
     }
@@ -102,13 +107,12 @@ app.get('/polls/:id', (req, res) =>{
 })
 //hompage
 app.all('/', function(req, res){
-  var ip = req.headers['x-forwarded-for'].split(',')[0];
-  
+  console.log("rendering homepage")
+  var ip = req.headers['x-forwarded-for'].split(',')[0]; 
   res.render('index', app.get(ip))
   
 });
 app.get("/mypolls", function(req,res){
-  // knowing if a user is logged in
     
   var ip = req.headers['x-forwarded-for'].split(',')[0];
   res.render('mypolls', app.get(ip))
