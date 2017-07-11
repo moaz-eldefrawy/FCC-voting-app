@@ -85,10 +85,9 @@ app.get('*', function(req, res, next){
     // getting user info
   var getUserInfo = isAuth(ip)  
   getUserInfo.then(function(userInfo){
-    if(app.get(ip) == true){
+    if(userInfo[0].url == ip){
       app.set(ip, {userName: userInfo[0].name, userAuth: true});
     }
-    
     next()
   });
 })
@@ -139,17 +138,18 @@ app.get("/newpoll", function(req, res){
     MongoClient.connect(dbUrl, (err, db) => {
       if(err) return console.log(err)
       // attaching the collection to the user
-      var p = new Promise((resolve, reject) => { 
+      new Promise((resolve, reject) => { 
         var usersColl = db.collection('verifiedUsers');
+        console.log(app.get(ip))
         usersColl.update({name: app.get(ip).userName}, {'$push': pollName}, () =>{
           resolve(123);
         })
-      });
-      p.then(function(val){
+      }).then((val) => {
         // saving the collection to the database
         var pollsColl = db.collection('polls')
-        pollsColl.insert({name: pollName, options: options, voters:[]})
-        return 123;
+        pollsColl.insert({name: pollName, options: options, voters:[]}, function(){
+            return 123;
+        })
       }).then((val) => {
         console.log('db closed')
         db.close();
