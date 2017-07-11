@@ -137,8 +137,12 @@ app.get("/newpoll", function(req, res){
     var pollName = req.query.name;
     MongoClient.connect(dbUrl, (err, db) => {
       if(err) return console.log(err)
+      // attaching the collection to the user
       var usersColl = db.collection('verifiedUsers');
-      usersColl.update({name: app.get(ip).userName}, {'$set': {}})
+      usersColl.update({name: app.get(ip).userName}, {'$push': pollName})
+      // saving the collection to the database
+      var pollsColl = db.collection('polls')
+      pollsColl.insert({name: pollName, options: options, voters:[]});
     })
   }
 })
@@ -188,7 +192,7 @@ app.all('/signup', function(req, res){
                         usersColl.find({"name": user.name}).toArray(function (err, docs){
                           app.set(ip, true);
                           if(!docs.length){ //frsit time to sign in with twitter
-                            usersColl.insert( {name: user.name, url: ip}, function(){
+                            usersColl.insert( {name: user.name, url: ip, polls: []}, function(){
                               db.close();
                               res.redirect('https://fancy-thrill.glitch.me');
                             });
