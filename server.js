@@ -134,11 +134,12 @@ app.get("/newpoll", function(req, res){
   else{
     console.log(req.query);
     var options = req.query.options.split('\n');
-    console.log(options);
-    options = decodeOptions(options)
-    console.log(options)
     var pollName = req.query.name;
-    res.end(options[0].toString());
+    MongoClient.connect(dbUrl, (err, db) => {
+      if(err) return console.log(err)
+      var usersColl = db.collection('verifiedUsers');
+      usersColl.update({name: app.get(ip).userName}, {'$set': {}})
+    })
   }
 })
 
