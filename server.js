@@ -82,7 +82,6 @@ function isAuth(url){
 //hompage
 var authenticateRequest;
 app.get('*', function(req, res, next){
-  console.log('somthing ounfd')
   authenticateRequest = new Promise((resolve, reject) =>{
     var ip = req.headers['x-forwarded-for'].split(',')[0];
     console.log(ip)
@@ -91,14 +90,17 @@ app.get('*', function(req, res, next){
     //console.log(getUserInfo)
     getUserInfo.then(function(userInfo){
       //console.log(userInfo[0].url + " " + ip)
-      app.set(ip, {userName: userInfo[0].name, userAuth: true});
-      console.log("ip is set")   
-      return 0;
+      if(app.get('lastRequest') != 'signout')
+        resolve({userName: userInfo[0].name, userAuth: true});
+      
+      else{
+        app.set('lastRequest', 'notsingout')
+        resolve({userAuth: false})  
+      }
     }).catch(function(){
-        app.set(ip, {userAuth: false})
+       resolve({userAuth: false})
         return 0;
     })
-    resolve()
     next()
   })
 })
@@ -113,11 +115,9 @@ app.get('/polls/:id', (req, res) =>{
 })
 //hompage
 app.all('/', function(req, res){
-  authenticateRequest.then(()=>{ 
+  authenticateRequest.then((response)=>{ 
     console.log("rendering homepage")
-    var ip = req.headers['x-forwarded-for'].split(',')[0]; 
-    console.log(app.get(ip))
-    res.render('index', app.get(ip))
+    res.render('index', response)
   })
 });
 app.get("/mypolls", function(req,res){
@@ -239,7 +239,7 @@ app.all('/signup', function(req, res){
 })
 app.get('/signout', function(req, res, next){
   var ip = req.headers['x-forwarded-for'].split(',')[0];
-  app.set(ip, false);
+  app.set('lastRequest', 'signout');
   res.redirect('https://fancy-thrill.glitch.me')
 })
 
