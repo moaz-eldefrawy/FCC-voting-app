@@ -65,8 +65,7 @@ function isAuth(url){
   return new Promise(function(resolve, reject){
     MongoClient.connect(dbUrl, function(err, db){
       var usersColl = db.collection("verifiedUsers");
-      usersColl.find({url: url}).toArray(function(err, docs){
-        
+      usersColl.find({url: url}).toArray(function(err, docs){   
         db.close()
         resolve(docs);
       })
@@ -77,11 +76,10 @@ function isAuth(url){
 
 // Handling Requests
 
-
-
 //hompage
 var authenticateRequest;
-app.get('*', function(req, res, next){
+app.get('*', (req, res, next) =>{
+  
   authenticateRequest = new Promise((resolve, reject) =>{
     var ip = req.headers['x-forwarded-for'].split(',')[0];
     console.log(ip)
@@ -89,8 +87,8 @@ app.get('*', function(req, res, next){
     var getUserInfo = isAuth(ip)  
     //console.log(getUserInfo)
     getUserInfo.then(function(userInfo){
-      //console.log(userInfo[0].url + " " + ip)
-      if(app.get('lastRequest') != 'signout')
+      console.log(userInfo[0].url + " " + ip)
+      if(userInfo[0].url == ip)
         resolve({userName: userInfo[0].name, userAuth: true});
       
       else{
@@ -116,7 +114,7 @@ app.get('/polls/:id', (req, res) =>{
 //hompage
 app.all('/', function(req, res){
   authenticateRequest.then((response)=>{ 
-    console.log("rendering homepage")
+    console.log(response)
     res.render('index', response)
   })
 });
@@ -227,7 +225,6 @@ app.all('/signup', function(req, res){
                             usersColl.update( {name: user.name}, {'$set': {url: ip} } , function(){
                               db.close();
                               res.redirect('https://fancy-thrill.glitch.me');
-                              
                             });
                             
                           }
@@ -242,9 +239,12 @@ app.get('/signout', function(req, res, next){
   var ip = req.headers['x-forwarded-for'].split(',')[0];
   MongoClient.connect(dbUrl, (err, db) => {
     var usersColl = db.collection('verifiedUsers');
-    usersColl.upaate({url: ip}, {'$set': {url: 'not found'}})
+    usersColl.update({url: ip}, {'$set': {url: 'not found'}}, () =>{
+      res.redirect('https://fancy-thrill.glitch.me')
+      db.close()
+    })
   })
-  res.redirect('https://fancy-thrill.glitch.me')
+  
 })
 
 // catch 404 and forward to error handler
