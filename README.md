@@ -22,3 +22,18 @@ Db > polls:
   }
   
 }
+
+signs in:
+this guy >> has this url.
+
+opens a url:
+this url, send this guy.
+
+new poll:
+this guy add a new poll
+
+my poll:
+this guys get his polls
+
+signout:
+this guy disable url

@@ -126,6 +126,7 @@ app.get("/mypolls", function(req,res){
   res.render('mypolls', app.get(ip))
   
 })
+
 app.get("/newpoll", function(req, res){
   function decodeOptions(str){
     var result = [];
@@ -239,7 +240,10 @@ app.all('/signup', function(req, res){
 })
 app.get('/signout', function(req, res, next){
   var ip = req.headers['x-forwarded-for'].split(',')[0];
-  app.set('lastRequest', 'signout');
+  MongoClient.connect(dbUrl, (err, db) => {
+    var usersColl = db.collection('verifiedUsers');
+    usersColl.upaate({url: ip}, {'$set': {url: 'not found'}})
+  })
   res.redirect('https://fancy-thrill.glitch.me')
 })
 
