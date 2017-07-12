@@ -77,30 +77,34 @@ function isAuth(url){
 // Handling Requests
 
 //hompage
-var authenticateRequest;
+var getUserInfo;
 app.use('*', function(req, res, next) {
-  authenticateRequest = new Promise((resolve, reject) =>{
     var ip = req.headers['x-forwarded-for'].split(',')[0];
     //console.log(ip)
       // getting user info
-    var getUserInfo = isAuth(ip)  
+    getUserInfo = isAuth(ip)  
+    console.log('1')
     //console.log(getUserInfo)
     getUserInfo.then(function(userInfo){
       console.log(userInfo[0].url + " " + ip)
+      
       if(userInfo[0].url == ip)
-        resolve({userName: userInfo[0].name, userAuth: true});
+        return({userName: userInfo[0].name, userAuth: true});
       
       else{
         app.set('lastRequest', 'notsingout')
-        resolve({userAuth: false})  
+      
+        return({userAuth: false})  
       }
+      console.log('2');
     }).catch(function(){
-       resolve({userAuth: false})
+       return({userAuth: false})
         return 0;
     })
-    next()
-  })
+next()
+      
 })
+  
 
 app.get('/polls', function(req, res){
   var ip = req.headers['x-forwarded-for'].split(',')[0];
@@ -112,10 +116,13 @@ app.get('/polls/:id', (req, res) =>{
 })
 //hompage
 app.all('/', function(req, res){
-  
-  authenticateRequest.then((response)=>{ 
+  console.log(3)
+  getUserInfo.then(function(response){ 
+    console.log(4)
     console.log(response)
     res.render('index', response)
+  }).catch(function(err){
+    res.end("erro" + err);
   })
 });
 app.get("/mypolls", function(req,res){
