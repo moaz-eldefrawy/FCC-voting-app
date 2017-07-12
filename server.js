@@ -78,14 +78,14 @@ function isAuth(url){
 
 //hompage
 var getUserInfo;
-app.use('*', function(req, res, next) {
+app.use(function(req, res, next) {
     var ip = req.headers['x-forwarded-for'].split(',')[0];
     //console.log(ip)
       // getting user info
     getUserInfo = isAuth(ip)  
     console.log('1')
     //console.log(getUserInfo)
-    getUserInfo.then(function(userInfo){
+    getUserInfo = getUserInfo.then(function(userInfo){
       console.log(userInfo[0].url + " " + ip)
         console.log('2');
       
@@ -115,20 +115,19 @@ app.get('/polls/:id', (req, res) =>{
 })
 //hompage
 app.all('/', function(req, res){
-  console.log(3)
   getUserInfo.then(function(response){ 
-    console.log(4)
-    console.log(response)
     res.render('index', response)
   }).catch(function(err){
     res.end("erro" + err);
   })
 });
 app.get("/mypolls", function(req,res){
-    
-  var ip = req.headers['x-forwarded-for'].split(',')[0];
-  res.render('mypolls', app.get(ip))
-  
+
+  getUserInfo.then(function(response){ 
+    res.render('index', response)
+  }).catch(function(err){
+    res.end("erro" + err);
+  })
 })
 
 app.get("/newpoll", function(req, res){
