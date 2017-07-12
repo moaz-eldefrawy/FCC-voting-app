@@ -78,11 +78,10 @@ function isAuth(url){
 
 //hompage
 var authenticateRequest;
-app.get('*', (req, res, next) =>{
-  
+app.use('*', function(req, res, next) {
   authenticateRequest = new Promise((resolve, reject) =>{
     var ip = req.headers['x-forwarded-for'].split(',')[0];
-    console.log(ip)
+    //console.log(ip)
       // getting user info
     var getUserInfo = isAuth(ip)  
     //console.log(getUserInfo)
@@ -113,6 +112,7 @@ app.get('/polls/:id', (req, res) =>{
 })
 //hompage
 app.all('/', function(req, res){
+  
   authenticateRequest.then((response)=>{ 
     console.log(response)
     res.render('index', response)
