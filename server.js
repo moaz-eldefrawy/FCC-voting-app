@@ -87,21 +87,20 @@ app.use('*', function(req, res, next) {
     //console.log(getUserInfo)
     getUserInfo.then(function(userInfo){
       console.log(userInfo[0].url + " " + ip)
+        console.log('2');
       
       if(userInfo[0].url == ip)
         return({userName: userInfo[0].name, userAuth: true});
       
       else{
-        app.set('lastRequest', 'notsingout')
-      
+        
         return({userAuth: false})  
       }
-      console.log('2');
     }).catch(function(){
        return({userAuth: false})
         return 0;
     })
-next()
+    next()
       
 })
   
