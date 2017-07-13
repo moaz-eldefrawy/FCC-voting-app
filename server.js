@@ -128,7 +128,7 @@ app.get("/mypolls", function(req,res){
 
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, (err, db) => {
-        
+     // var   
     })
     res.render('mypolls', response);
   }).catch(function(err){
@@ -167,7 +167,8 @@ app.get("/newpoll", function(req, res){
       // attaching the collection to the user
       new Promise((resolve, reject) => { 
         var usersColl = db.collection('verifiedUsers');
-        console.log(app.get(ip))
+        var pollsColl = db.collection('polls');
+       new Promise((resolve, reject) => { 
         usersColl.update({name: app.get(ip).userName}, {'$push': pollName}, () =>{
           resolve(123);
         })
@@ -182,7 +183,8 @@ app.get("/newpoll", function(req, res){
         db.close();
         res.redirect('https://fancy-thrill.glitch.me/');
       })
-    })
+      })
+    }
   }
 
 })
