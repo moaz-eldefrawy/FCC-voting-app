@@ -106,8 +106,11 @@ app.use(function(req, res, next) {
   
 
 app.get('/polls', function(req, res){
-  var ip = req.headers['x-forwarded-for'].split(',')[0];
-  res.render('index', app.get(ip));
+  getUserInfo.then(function(response){ 
+    res.render('index', response)
+  }).catch(function(err){
+    res.end("erro" + err);
+  })
   
 });
 app.get('/polls/:id', (req, res) =>{
@@ -123,8 +126,11 @@ app.all('/', function(req, res){
 });
 app.get("/mypolls", function(req,res){
 
-  getUserInfo.then(function(response){ 
-    res.render('index', response)
+  getUserInfo.then(function(response){
+    MongoClient.connect(dbUrl, (err, db) => {
+        
+    })
+    res.render('mypolls', response);
   }).catch(function(err){
     res.end("erro" + err);
   })
@@ -146,8 +152,13 @@ app.get("/newpoll", function(req, res){
   }
   
   var ip = req.headers['x-forwarded-for'].split(',')[0];
-  if(!Object.keys(req.query).length) // requesting the page
-    res.render( 'newpoll', app.get(ip));  
+  if(!Object.keys(req.query).length) {// requesting the page
+    getUserInfo.then(function(response){ 
+      res.render('newpoll', response);
+    }).catch(function(err){
+      res.end("erro" + err);
+    })
+  }
   else{
     var options = req.query.options.split('\n');
     var pollName = req.query.name;
