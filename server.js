@@ -67,8 +67,10 @@ function isAuth(url){
       var usersColl = db.collection("verifiedUsers");
       usersColl.find({url: url}).toArray(function(err, docs){   
         db.close()
+        console.log(docs)
         if(!docs.length)
-          docs[0].url = 'not found';
+          resolve([{url: 'not found'}])
+          
         resolve(docs);
       })
     })
@@ -125,7 +127,7 @@ app.get('/', function(req, res){
   var pollsNames = [];
     
   getUserInfo.then(function(response){
-     
+     console.log(response)
       MongoClient.connect(dbUrl, function(err, db){
         if(err) console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');

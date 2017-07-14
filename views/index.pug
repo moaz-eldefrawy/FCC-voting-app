@@ -4,7 +4,7 @@ extends layout
 append content  
   .container.content
     h1 Fcc-Voting
-    if userName == 1
+    if userAuth == 0
       h3 Select a poll to see the results and vote, or sign-in to make a new poll.
     else
       h3 Select a poll to see the results and vote, or #[a(href=websiteUrl + '/newpoll') make a new poll!] 
