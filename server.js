@@ -107,6 +107,7 @@ app.use(function(req, res, next) {
 
 app.get('/polls', function(req, res){
   getUserInfo.then(function(response){ 
+    
     res.render('index', response)
   }).catch(function(err){
     res.end("erro" + err);
@@ -117,7 +118,7 @@ app.get('/polls/:id', (req, res) =>{
   res.end(req.pramas.id);
 })
 //hompage
-app.all('/', function(req, res){
+app.get('/', function(req, res){
   getUserInfo.then(function(response){ 
     res.render('index', response)
   }).catch(function(err){
