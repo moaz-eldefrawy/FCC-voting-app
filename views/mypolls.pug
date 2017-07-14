@@ -1,13 +1,12 @@
 extends layout
 
 append content
-  - var polls = ['asdas']
   .container.content
     h1 Fcc-Voting
     if !userAuth
       h3 Select a poll to see the results and vote, or sign-in to make a new poll.
     else
-      h3 Select a poll to see the results and vote, or #[a(href="#") make a new poll!]
+      h3 Select a poll to see the results and vote, or #[a(href=websiteUrl + "/newpoll") make a new poll!]
       
     ul
       each val in polls

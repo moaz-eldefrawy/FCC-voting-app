@@ -7,7 +7,7 @@ append content
     if userName == 1
       h3 Select a poll to see the results and vote, or sign-in to make a new poll.
     else
-      h3 Select a poll to see the results and vote, or #[a(href="#") make a new poll!] 
+      h3 Select a poll to see the results and vote, or #[a(href=websiteUrl + '/newpoll') make a new poll!] 
       
     ul
       each val in pollsNames

@@ -143,11 +143,12 @@ app.get("/mypolls", function(req,res){
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, (err, db) => {
       var usersColl = db.collection('verifiedUsers');
-      usersColl.find({name: response.userName}, function(err, docs){
+      usersColl.find({name: response.userName}).toArray(function(err, docs){
+        if(err) return console.log(err);
         console.log(docs)
-        response.polls = docs.polls;
+        response.polls = docs[0].polls;
         console.log(response);
-          
+        res.render('mypolls', response);       
       })
     })
   }).catch(function(err){
