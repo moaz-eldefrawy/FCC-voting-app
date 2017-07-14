@@ -150,47 +150,43 @@ app.get("/newpoll", function(req, res){
     
     return result;
   }
-  var _userInfo = {};
+  
   getUserInfo.then(function(response){ 
-    _userInfo = response;
-  })
-  var ip = req.headers['x-forwarded-for'].split(',')[0];
-  if(!Object.keys(req.query).length) {// requesting the page
-    res.render('newpoll', _userInfo)
-  }
-  else{
-    console.log(' a poll made!! ')
-    var options = req.query.options.split('\n');
-    var pollName = req.query.name;
-    MongoClient.connect(dbUrl, (err, db) => {
-      if(err) return console.log(err)
-      // attaching the collection to the user
-      new Promise((resolve, reject) => { 
-        var usersColl = db.collection('verifiedUsers');
-        var pollsColl = db.collection('polls');
-        var f1 = false, f2 = false;
-        console.log(_userInfo.userName);
-        usersColl.update({name: _userInfo[0].userName}, {$push: {"polls": pollName} }, function(err, data){
-          console.log(err + " " + data);
-          f1 = true;
-          if(f1 & f2)
-            resolve(123)
-        })
-        pollsColl.insert({name: pollName, options: options, voters:[]}, function(){
-          f2 = true;
-          if(f1 & f2)
-            resolve(123)
-        })
-        
-      }).then((val) => {
-        db.close();
-        res.redirect('https://fancy-thrill.glitch.me/');
-      }).catch((err) => {
-        console.log(err)
-      })
-    })
-  }
+    var ip = req.headers['x-forwarded-for'].split(',')[0];
+    if(!Object.keys(req.query).length) {// requesting the page
+      res.render('newpoll', response)
+    }
+    else{
+      console.log(' a poll made!! ')
+      var options = req.query.options.split('\n');
+      var pollName = req.query.name;
+      MongoClient.connect(dbUrl, (err, db) => {
+        if(err) return console.log(err)
+        // attaching the collection to the user
+        new Promise((resolve, reject) => { 
+          var usersColl = db.collection('verifiedUsers');
+          var pollsColl = db.collection('polls');
+          var f1 = false, f2 = false;
+          usersColl.update({name: response.userName}, {$push: {"polls": pollName} }, function(err, data){
+           f1 = true;
+            if(f1 & f2)
+              resolve(123)
+          })
+          pollsColl.insert({name: pollName, options: options, voters:[]}, function(){
+            f2 = true;
+            if(f1 & f2)
+              resolve(123)
+          })
 
+        }).then((val) => {
+          db.close();
+          res.redirect('https://fancy-thrill.glitch.me/');
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+    }
+  })
 })
 
 
