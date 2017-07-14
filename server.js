@@ -123,17 +123,13 @@ app.get('/', function(req, res){
   var pollsNames = [];
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, function(err, db){
-      var pollsColl = db.collection('polls');
-      pollsColl.find().toArray(function(docs){
-        docs = docs || [{}]
-        console.log(docs)
+      if(err) console.log("Unable to connecto to MongoDb");
+        var pollsColl = db.collection('polls');
+        pollsColl.find().toArray(function(err, docs){
         for(var i=0; i<docs.length; i++){
-          console.log(docs);
-          pollsNames.push(docs.name);
+          pollsNames.push(docs[i].name);
         }
-        console.log(pollsNames)
         response.pollsNames = pollsNames;
-        console.log(response)
         res.render('index', response)
   
       })
@@ -146,9 +142,14 @@ app.get("/mypolls", function(req,res){
 
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, (err, db) => {
-     // var   
+      var usersColl = db.collection('verifiedUsers');
+      usersColl.find({name: response.userName}, function(err, docs){
+        console.log(docs)
+        response.polls = docs.polls;
+        console.log(response);
+          
+      })
     })
-    res.render('mypolls', response);
   }).catch(function(err){
     res.end("erro" + err);
   })
