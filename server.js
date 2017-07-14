@@ -67,6 +67,8 @@ function isAuth(url){
       var usersColl = db.collection("verifiedUsers");
       usersColl.find({url: url}).toArray(function(err, docs){   
         db.close()
+        if(!docs.length)
+          docs[0].url = 'not found';
         resolve(docs);
       })
     })
@@ -86,14 +88,14 @@ app.use(function(req, res, next) {
     console.log('1')
     //console.log(getUserInfo)
     getUserInfo = getUserInfo.then(function(userInfo){
-      console.log(userInfo[0].url + " " + ip)
+      console.log(userInfo[0].url + " " + ip);
+      console.log("working")
         console.log('2');
       
       if(userInfo[0].url == ip){
         return({userName: userInfo[0].name, userAuth: true});
       }
       else{
-        
         return({userAuth: false})  
       }
     }).catch(function(){
@@ -121,24 +123,25 @@ app.get('/polls/:id', (req, res) =>{
 app.get('/', function(req, res){
   console.log('asd');
   var pollsNames = [];
+    
   getUserInfo.then(function(response){
-    MongoClient.connect(dbUrl, function(err, db){
-      if(err) console.log("Unable to connecto to MongoDb");
-        if(response.userAuth == true){
+     
+      MongoClient.connect(dbUrl, function(err, db){
+        if(err) console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');
           pollsColl.find().toArray(function(err, docs){
           for(var i=0; i<docs.length; i++){
             pollsNames.push(docs[i].name);
           }
-        
-          }
-        res.render('index', response)
-  
+
+          response.pollsNames = pollsNames;
+          res.render('index', response)
+        })
       })
+       
+    }).catch(function(err){
+      res.end("erro" + err);
     })
-  }).catch(function(err){
-    res.end("erro" + err);
-  })
 });
 app.get("/mypolls", function(req,res){
 

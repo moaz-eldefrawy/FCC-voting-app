@@ -13,7 +13,7 @@ append content
       each val in pollsNames
         li.item #[a(href=websiteUrl + "/polls/" + val) #{val}]
       else
-        li There are no Polls
+        li #[h2(style="color: #da0000") there are no Polls]
         
 
     h5 #[b This "fcc-voting" app is built by #[a(href="https://github.com/moaz-eldefrawy", target="_blank") Moaz ELdefrawy]] 
