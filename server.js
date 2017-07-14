@@ -10,7 +10,7 @@ var twitterApi = require("node-twitter-api");
 var app = express();
 
 
-"user-strict";
+"use-strict";
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -124,12 +124,14 @@ app.get('/', function(req, res){
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, function(err, db){
       if(err) console.log("Unable to connecto to MongoDb");
-        var pollsColl = db.collection('polls');
-        pollsColl.find().toArray(function(err, docs){
-        for(var i=0; i<docs.length; i++){
-          pollsNames.push(docs[i].name);
-        }
-        response.pollsNames = pollsNames;
+        if(response.userAuth == true){
+          var pollsColl = db.collection('polls');
+          pollsColl.find().toArray(function(err, docs){
+          for(var i=0; i<docs.length; i++){
+            pollsNames.push(docs[i].name);
+          }
+        
+          }
         res.render('index', response)
   
       })

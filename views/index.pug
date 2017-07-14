@@ -11,7 +11,7 @@ append content
       
     ul
       each val in pollsNames
-        li.item #{val} 
+        li.item #[a(href=websiteUrl + "/polls/" + val) #{val}]
       else
         li There are no Polls
         
