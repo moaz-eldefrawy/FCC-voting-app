@@ -150,16 +150,16 @@ app.get("/newpoll", function(req, res){
     
     return result;
   }
-  
+  var _userInfo = {};
+  getUserInfo.then(function(response){ 
+    _userInfo = response;
+  })
   var ip = req.headers['x-forwarded-for'].split(',')[0];
   if(!Object.keys(req.query).length) {// requesting the page
-    getUserInfo.then(function(response){ 
-      res.render('newpoll', response);
-    }).catch(function(err){
-      res.end("erro" + err);
-    })
+    res.render('newpoll', _userInfo)
   }
   else{
+    console.log(' a poll made!! ')
     var options = req.query.options.split('\n');
     var pollName = req.query.name;
     MongoClient.connect(dbUrl, (err, db) => {
@@ -168,23 +168,25 @@ app.get("/newpoll", function(req, res){
       new Promise((resolve, reject) => { 
         var usersColl = db.collection('verifiedUsers');
         var pollsColl = db.collection('polls');
-       new Promise((resolve, reject) => { 
-        usersColl.update({name: app.get(ip).userName}, {'$push': pollName}, () =>{
-          resolve(123);
+        var f1 = false, f2 = false;
+        usersColl.update({name: _userInfo.userName}, {'$push': pollName}, () =>{
+          f1 = true;
+          if(f1 & f2)
+            resolve(123)
         })
-      }).then((val) => {
-        // saving the collection to the database
-        var pollsColl = db.collection('polls')
         pollsColl.insert({name: pollName, options: options, voters:[]}, function(){
-            return 123;
+          f2 = true;
+          if(f1 & f2)
+            resolve(123)
         })
+        
       }).then((val) => {
-        console.log('db closed')
         db.close();
         res.redirect('https://fancy-thrill.glitch.me/');
+      }).catch((err) => {
+        console.log(err)
       })
-      })
-    }
+    })
   }
 
 })
