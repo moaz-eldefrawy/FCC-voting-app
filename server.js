@@ -89,9 +89,9 @@ app.use(function(req, res, next) {
       console.log(userInfo[0].url + " " + ip)
         console.log('2');
       
-      if(userInfo[0].url == ip)
+      if(userInfo[0].url == ip){
         return({userName: userInfo[0].name, userAuth: true});
-      
+      }
       else{
         
         return({userAuth: false})  
@@ -119,8 +119,25 @@ app.get('/polls/:id', (req, res) =>{
 })
 //hompage
 app.get('/', function(req, res){
-  getUserInfo.then(function(response){ 
-    res.render('index', response)
+  console.log('asd');
+  var pollsNames = [];
+  getUserInfo.then(function(response){
+    MongoClient.connect(dbUrl, function(err, db){
+      var pollsColl = db.collection('polls');
+      pollsColl.find().toArray(function(docs){
+        docs = docs || [{}]
+        console.log(docs)
+        for(var i=0; i<docs.length; i++){
+          console.log(docs);
+          pollsNames.push(docs.name);
+        }
+        console.log(pollsNames)
+        response.pollsNames = pollsNames;
+        console.log(response)
+        res.render('index', response)
+  
+      })
+    })
   }).catch(function(err){
     res.end("erro" + err);
   })
