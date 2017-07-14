@@ -169,7 +169,9 @@ app.get("/newpoll", function(req, res){
         var usersColl = db.collection('verifiedUsers');
         var pollsColl = db.collection('polls');
         var f1 = false, f2 = false;
-        usersColl.update({name: _userInfo.userName}, {'$push': pollName}, () =>{
+        console.log(_userInfo.userName);
+        usersColl.update({name: _userInfo[0].userName}, {$push: {"polls": pollName} }, function(err, data){
+          console.log(err + " " + data);
           f1 = true;
           if(f1 & f2)
             resolve(123)
