@@ -108,21 +108,12 @@ app.use(function(req, res, next) {
 })
   
 
-app.get('/polls', function(req, res){
-  getUserInfo.then(function(response){ 
-    
-    res.render('index', response)
-  }).catch(function(err){
-    res.end("erro" + err);
-  })
-  
-});
-app.get('/polls/:id', (req, res) =>{
-  res.end(req.pramas.id);
+app.get('/polls/:id', (req, res) => {
+  var pollName = req.params.id;
+    res.render('poll')
 })
 //hompage
-app.get('/', function(req, res){
-  console.log('asd');
+function renderHomepage(req, res){
   var pollsNames = [];
     
   getUserInfo.then(function(response){
@@ -143,7 +134,10 @@ app.get('/', function(req, res){
     }).catch(function(err){
       res.end("erro" + err);
     })
-});
+}
+
+app.get('/polls', renderHomepage)
+app.get('/', renderHomepage);
 app.get("/mypolls", function(req,res){
 
   getUserInfo.then(function(response){
