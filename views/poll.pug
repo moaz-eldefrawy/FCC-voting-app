@@ -1,8 +1,11 @@
 extends layout
 
 append content
-  .content.row.container
-    .col-md-6
+  .content.container
+    .col-md-3
+      h
+    
+    .col-md-9
       canvas#myChart(width='400', height='400', style='width: 500px; height: 500px;')
       script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js')
       script.
@@ -38,7 +41,5 @@ append content
           }
         });
 
-      
-    .col-md-6
-      
+        
   
