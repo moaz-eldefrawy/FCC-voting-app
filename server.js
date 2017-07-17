@@ -9,7 +9,6 @@ var twitterApi = require("node-twitter-api");
 
 var app = express();
 
-
 "use-strict";
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
