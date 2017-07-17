@@ -108,10 +108,14 @@ app.use(function(req, res, next) {
 })
   
 
-app.get('/polls/:id', (req, res) => {
+app.get('/pollsid', renderHomepage);/*(req, res) => {
   var pollName = req.params.id;
-    res.render('poll')
-})
+  getUserInfo.then(function(response){ 
+    res.render('newpoll', response)
+  }).catch(function(err){
+    res.end("erro" + err);
+  })
+})*/
 //hompage
 function renderHomepage(req, res){
   var pollsNames = [];
