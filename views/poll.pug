@@ -4,7 +4,7 @@ append content
   - var pollName = "what do you like?"
   - var polls = ['tomato', 'carrots', 'cheese']
   .content.container
-    .col-md-3
+    .col-md-4
       h3= pollName
       .form-group  
         label #[h2 #[b I'd like to vote for:]]
@@ -12,12 +12,14 @@ append content
           each val in polls
             option= val
         
-        input.btn.btn-primary submit
-        br
         .btn.btn-info share on twitter
     
-    .col-md-9
-      canvas#myChart(width='400', height='400', style='width: 500px; height: 500px;')
+    .col-md-8(style="text-align: center;")
+      canvas#myChart(width='400', height='400', style='max-width: 500px; max-height: 500px; margin-left: auto; margin-right: auto')
+      
+      br
+      .btn.btn-block.btn-danger Remove This Poll
+      
       script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js')
       script.
         var usedColors = [];
@@ -48,7 +50,7 @@ append content
             }]
           },
           options: {
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
           }
         });
 
