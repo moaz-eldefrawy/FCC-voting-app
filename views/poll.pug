@@ -1,4 +1,44 @@
 extends layout
 
 append content
+  .content.row.container
+    .col-md-6
+      canvas#myChart(width='400', height='400', style='width: 500px; height: 500px;')
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js')
+      script.
+        var usedColors = [];
+        function generateRandomColor(){
+        var r = Math.floor(Math.random()*254),
+        g = Math.floor(Math.random()*254),
+        b = Math.floor(Math.random()*254),
+        opacity = Math.random()
+        var color = "rgba(" + r + ", " + g + ", " + b + ", " + opacity + ")";
+        return color.toString();
+        }
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [{
+              label: '# of Votes',
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: [
+                generateRandomColor(),
+                generateRandomColor(),
+                generateRandomColor(),
+                generateRandomColor(),
+                generateRandomColor(),
+                generateRandomColor(),
+              ],
+            }]
+          },
+          options: {
+            maintainAspectRatio: false,
+          }
+        });
+
+      
+    .col-md-6
+      
   
