@@ -10,7 +10,7 @@ append content
       
     ul
       each val in polls
-        li.item #[a(href=websiteUrl + "/" + val) #{val}]
+        li.item #[a(href=websiteUrl + "/polls/" + val) #{val}]
       else
         li #[h2(style="color: #da0000") You don't have any created polls]
         

@@ -108,7 +108,7 @@ app.use(function(req, res, next) {
 })
   
 
-app.get('/:id', (req, res) => {
+app.get('/polls/:id', (req, res) => {
   var pollName = req.params.id;
   getUserInfo.then(function(response){ 
     res.render('poll', response)

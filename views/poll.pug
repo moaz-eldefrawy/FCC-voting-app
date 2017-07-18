@@ -25,14 +25,20 @@ append content
       
       script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js')
       script.
+        // remove poll
+        if(userAuth == false){
+          alert("user auth is true");
+        }
+      
+        // graph
         var usedColors = [];
         function generateRandomColor(){
-        var r = Math.floor(Math.random()*254),
-        g = Math.floor(Math.random()*254),
-        b = Math.floor(Math.random()*254),
-        opacity = Math.random()
-        var color = "rgba(" + r + ", " + g + ", " + b + ", " + opacity + ")";
-        return color.toString();
+          var r = Math.floor(Math.random()*254),
+          g = Math.floor(Math.random()*254),
+          b = Math.floor(Math.random()*254),
+          opacity = Math.random()
+          var color = "rgba(" + r + ", " + g + ", " + b + ", " + opacity + ")";
+          return color.toString();
         }
         var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {
