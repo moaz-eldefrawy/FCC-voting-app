@@ -17,6 +17,7 @@ html
     <![endif]-->
   
   body
+    - var myUrl = websiteUrl + '/polls/' + pollName;
     - var websiteUrl = "https://fancy-thrill.glitch.me"
     .container
       nav.navbar.navbar-default
@@ -67,15 +68,17 @@ html
         select.form-control
           each val in polls
             option= val
-            
-        br 
-        if userAuth 
-          form.form-group.row(action=websiteUrl + '/polls/' + pollName)
-            input.col-sm-8(type="text", name="newOption")
-            input.btn.btn-primary(type="submit", value="add", style="float: left;padding: 2px 10px" ) 
-        br
         br
         input.btn.btn-block.btn-primary(type="submit" value="submit")
+        br
+        
+        
+        if userAuth 
+          form.form-group.row(action=myUrl)
+            input.col-xs-8(type="text", name="newOption", placeholder="add a new option ...")
+            input.btn.btn-primary(type="submit", value="add", style="float: left;padding: 2px 10px" ) 
+        
+        br
         br
         .btn.btn-info.btn-block share on twitter
         br
@@ -89,7 +92,11 @@ html
       script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js')
       script.
         // remove poll
-        
+        $(".btn-danger").click(function(){
+          $.ajax({
+            url: myUrl + "?remove=1" 
+          })
+        })  
       
         // graph
         var usedColors = [];
