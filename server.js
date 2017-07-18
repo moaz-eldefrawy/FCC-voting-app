@@ -106,7 +106,9 @@ app.use(function(req, res, next) {
     next()
       
 })
-  
+// remove a poll
+
+app
 
 app.get('/polls/:id', (req, res) => {
   var pollName = req.params.id;

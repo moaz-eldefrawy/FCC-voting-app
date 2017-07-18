@@ -93,9 +93,19 @@ html
       script.
         // remove poll
         $(".btn-danger").click(function(){
-          $.ajax({
-            url: myUrl + "?remove=1" 
-          })
+          if(confirm("Are you sure you want to delete this poll?")){ 
+            $.ajax({
+              url: myUrl + "?remove=1", 
+              method: "post",
+              success: function(){
+                window.href= websiteUrl;
+              },
+              error: function(){
+                alert("Sorry an Error happened");
+              }
+              
+            })
+          }
         })  
       
         // graph
