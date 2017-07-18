@@ -86,12 +86,8 @@ app.use(function(req, res, next) {
     //console.log(ip)
       // getting user info
     getUserInfo = isAuth(ip)  
-    console.log('1')
     //console.log(getUserInfo)
     getUserInfo = getUserInfo.then(function(userInfo){
-      console.log(userInfo[0].url + " " + ip);
-      console.log("working")
-        console.log('2');
       
       if(userInfo[0].url == ip){
         return({userName: userInfo[0].name, userAuth: true});
@@ -120,12 +116,15 @@ app.get('/polls/:id', (req, res) => {
 app.post('/polls/:id', (req, res) => {
   var pollName = req.params.id;
   getUserInfo.then(function(response){ 
+    console.log(req.query)
     if(req.query.remove == 1){
+      console.log(req.baseUrl);
+      console.log(req.path)
       MongoClient.connect(dbUrl, function(err, db){
         if(err) return console.log("Unable to connecto to MongoDb");
-    
+        db.close()
         var pollsColl = db.collectoin('polls');
-        pollsColl.
+       // pollsColl.remove({name: })
       })
       res.render('poll', response)
     } else
