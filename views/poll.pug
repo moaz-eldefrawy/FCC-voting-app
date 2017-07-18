@@ -1,6 +1,62 @@
-extends layout
+doctype html
+html
+  head
+    title FCC voting app
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    link(rel='stylesheet', href='../style.css')
+    link(type="text/css",rel='stylesheet', href="../bootstrap.css")
+    script(type="text/javascript", src="../jquery-3.2.1.min.js")  
+    script(src="../bootstrap.js")
+    script(src="../script.js")
 
-append content
+    <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+  body
+    - var websiteUrl = "https://fancy-thrill.glitch.me"
+    .container
+      nav.navbar.navbar-default
+          .container-fluid
+            // Brand and toggle get grouped for better mobile display
+            .navbar-header
+              button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar 
+                
+              a.navbar-brand(href=websiteUrl) FCC-voting
+            // Collect the nav links, forms, and other content for toggling
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              ul.nav.navbar-nav.navbar-right
+                li.active
+                  a(href=websiteUrl) Home
+                if userAuth  
+                  li
+                    a(href=websiteUrl + "/mypolls") My Polls
+                  li
+                    a(href=websiteUrl + "/newpoll") New Poll
+                  li.dropdown
+                    a.dropdown-toggle(, data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
+                      | #{userName} 
+                      span.caret
+                    |                   
+                    ul.dropdown-menu
+                      li
+                        a(href=websiteUrl + "/signout") Sign Out
+                else
+                  li
+                    a(href="https://fancy-thrill.glitch.me/request-token" id="signup") Sign in with Twitter
+            // navbar-collapse
+          // container-fluid
+
+  
+  
+
   - var pollName = "what do you like?"
   - var polls = ['tomato', 'carrots', 'cheese']
   .content.container
@@ -12,6 +68,7 @@ append content
           each val in polls
             option= val
         
+
         br
         .btn.btn-block.btn-primary submit
         br
@@ -20,15 +77,14 @@ append content
     .col-md-8(style="text-align: center;")
       canvas.center-block#myChart(width='400', height='400', style='max-width: 500px; max-height: 500px;')
       
-      br
-      .btn.btn-block.btn-danger Remove This Poll
+      if userAuth
+        br
+        .btn.btn-block.btn-danger Remove This Poll
       
       script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js')
       script.
         // remove poll
-        if(userAuth == false){
-          alert("user auth is true");
-        }
+        
       
         // graph
         var usedColors = [];
@@ -64,4 +120,7 @@ append content
         });
 
         
+  
+  .container
+  h5(style="text-align:center") #[b This "fcc-voting" app is built by #[a(href="https://github.com/moaz-eldefrawy", target="_blank") Moaz ELdefrawy]] 
   
