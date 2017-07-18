@@ -106,9 +106,6 @@ app.use(function(req, res, next) {
     next()
       
 })
-// remove a poll
-
-app
 
 app.get('/polls/:id', (req, res) => {
   var pollName = req.params.id;
@@ -118,6 +115,26 @@ app.get('/polls/:id', (req, res) => {
     res.end("erro" + err);
   })
 })
+
+// remove a poll
+app.post('/polls/:id', (req, res) => {
+  var pollName = req.params.id;
+  getUserInfo.then(function(response){ 
+    if(req.query.remove == 1){
+      MongoClient.connect(dbUrl, function(err, db){
+        if(err) return console.log("Unable to connecto to MongoDb");
+    
+        var pollsColl = db.collectoin('polls');
+        pollsColl.
+      })
+      res.render('poll', response)
+    } else
+      res.redirect("https://fancy-thrill.glitch.me/polls/" + pollName );
+  }).catch(function(err){
+    res.end("erro" + err);
+  })
+})
+
 //hompage
 function renderHomepage(req, res){
   var pollsNames = [];
