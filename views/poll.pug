@@ -62,16 +62,20 @@ html
   .content.container
     .col-md-4
       h3= pollName
-      .form-group  
+      form.form-group  
         label #[h2 #[b I'd like to vote for:]]
         select.form-control
           each val in polls
             option= val
-        if userAuth 
-          form(action=websiteUrl + '/polls/' + pollName)
             
+        br 
+        if userAuth 
+          form.form-group.row(action=websiteUrl + '/polls/' + pollName)
+            input.col-sm-8(type="text", name="newOption")
+            input.btn.btn-primary(type="submit", value="add", style="float: left;padding: 2px 10px" ) 
         br
-        .btn.btn-block.btn-primary submit
+        br
+        input.btn.btn-block.btn-primary(type="submit" value="submit")
         br
         .btn.btn-info.btn-block share on twitter
         br
