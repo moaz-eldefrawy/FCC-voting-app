@@ -67,8 +67,9 @@ html
         select.form-control
           each val in polls
             option= val
-        
-
+        if userAuth 
+          form(action=websiteUrl + '/polls/' + pollName)
+            
         br
         .btn.btn-block.btn-primary submit
         br
