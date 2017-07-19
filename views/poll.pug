@@ -95,10 +95,10 @@ html
         $(".btn-danger").click(function(){
           if(confirm("Are you sure you want to delete this poll?")){ 
             $.ajax({
-              url: 'w + "?remove=1", 
+              url: window.location.href + "?remove=1", 
               method: "post",
               success: function(){
-                window.href= websiteUrl;
+                window.location.href= "https://fancy-thrill.glitch.me";
               },
               error: function(){
                 alert("Sorry an Error happened");
