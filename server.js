@@ -123,6 +123,7 @@ app.post('/polls/:id', (req, res) => {
         db.close()
         var pollsColl = db.collection('polls');
         pollsColl.remove({name: pollName}, function(){
+          console.log
           var usersColl = db.collection('verifiedUsers')
           usersColl.update({}, {$pull: {polls: pollName} }, function(){
             db.close();
