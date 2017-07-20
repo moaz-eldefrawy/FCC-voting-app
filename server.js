@@ -115,9 +115,21 @@ app.get('/polls/:id', (req, res) => {
 // remove & add a poll
 app.post('/polls/:id', (req, res) => {
   var pollName = req.params.id;
+  var ip = req.headers['x-forwarded-for'].split(',')[0];
+  
+  function checkIfUserSubmitiedBefore(callback){
+      
+    MongoClient.connect(dbUrl, function(err, db){
+     if(err) return console.log('Unable to connect to MongoDB');
+      var pollsColl = db.collection('polls');
+      pollsColl.update({name: pollName}, {})
+    })
+    callback()
+  }
+  
   getUserInfo.then(function(response){ 
     console.log(pollName)
-    console.log(req.query.add)
+    console.log(req.query.choose)
     if(req.query.remove == 1){
       MongoClient.connect(dbUrl, function(err, db){
         if(err) return console.log("Unable to connecto to MongoDb");
@@ -131,8 +143,11 @@ app.post('/polls/:id', (req, res) => {
         })
       })
     } 
-    else if(req.query.add != undefined){
-      // chec
+    // handling user choosing an option to vote for
+    else if(req.query.choose != undefined){
+      // check if the user has submiited an option before
+      var didUserSubmit = checkIfUserSubmitiedBefore()
+      
         if(1){
         MongoClient.connect(dbUrl, function(err, db){
           if(err) return console.log("Unable to connecto to MongoDb");
