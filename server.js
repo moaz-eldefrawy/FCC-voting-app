@@ -136,12 +136,13 @@ app.post('/polls/:id', (req, res) => {
       })
     }
     console.log(pollName)
-    console.log(req.query.choose)
+    console.log(req.query)
     if(req.query.remove == 1){
       MongoClient.connect(dbUrl, function(err, db){
         if(err) return console.log("Unable to connecto to MongoDb");
         var pollsColl = db.collection('polls');
         pollsColl.remove({name: pollName}, function(data){
+          console.log(data)
           var usersColl = db.collection('verifiedUsers')
           usersColl.update({}, {$pull: {polls: pollName} }, function(){
             db.close();
@@ -175,7 +176,6 @@ function renderHomepage(req, res){
   var pollsNames = [];
     
   getUserInfo.then(function(response){
-     console.log(response)
       MongoClient.connect(dbUrl, function(err, db){
         if(err) console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');
@@ -205,7 +205,6 @@ app.get("/mypolls", function(req,res){
         if(err) return console.log(err);
         console.log(docs)
         response.polls = docs[0].polls;
-        console.log(response);
         res.render('mypolls', response);       
       })
     })
