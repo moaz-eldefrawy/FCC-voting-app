@@ -104,6 +104,17 @@ app.use(function(req, res, next) {
 })
 
 app.get('/polls/:id', (req, res) => {
+  getUserInfo.then(function(response){
+    res.render('poll', response)
+   
+  }).catch(function(err){
+    res.end("erro" + err);
+  })
+})
+
+
+// get poll options
+app.get('/polls/:id/getOptions', function(req, res){
   var pollName = req.params.id;
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, function(err, db){
@@ -111,11 +122,10 @@ app.get('/polls/:id', (req, res) => {
         response["options"] = docs.options;
         console.log(response)
         res.render('poll', response)
-   
       })
     })
-  }).catch(function(err){
-    res.end("erro" + err);
+  }).catch((err) =>{
+    res.end("error: " + err);
   })
 })
 

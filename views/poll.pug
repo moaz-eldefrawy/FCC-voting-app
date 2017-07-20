@@ -1,5 +1,6 @@
 doctype html
-html
+h    
+tml
   head
     title FCC voting app
     <meta charset="utf-8">
@@ -137,8 +138,13 @@ html
         // graph
         var options = [];
         $.ajax({
-          url:"/polls/" + pollName + "/getOptions",
-          get:
+          url:"/polls/" + pollName + "/getOptio          method: "get",ns",
+      success: funciton(data){
+            options = data;
+          },
+          error: function(err){
+            alert("sorry an error happend: \n" + err);
+          }          get:
         })
         
         var usedColors = [];
@@ -154,7 +160,7 @@ html
         var myChart = new Chart(ctx, {
           type: 'pie',
           data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+      optionsle", "Orange"],
             datasets: [{
               label: '# of Votes',
               data: [12, 19, 3, 5, 2, 3],
