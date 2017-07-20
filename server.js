@@ -148,7 +148,7 @@ app.post('/polls/:id', (req, res) => {
           usersColl.update({}, {$pull: {polls: pollName} }, function(){
             db.close();
             console.log('redirecting')
-            res.end('redirect');
+            res.redirect('https://fancy-thrill.glitch.me');
           })
         })
       })
