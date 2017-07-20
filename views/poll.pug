@@ -135,6 +135,11 @@ html
         })
       
         // graph
+        var options = [];
+        $.ajax({
+          url:"/polls/"
+        })
+        
         var usedColors = [];
         function generateRandomColor(){
           var r = Math.floor(Math.random()*254),
