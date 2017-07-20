@@ -118,10 +118,12 @@ app.get('/polls/:id/getOptions', function(req, res){
   var pollName = req.params.id;
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, function(err, db){
-      db.collection('polls').find({name: pollName}, {options: 1}, function(err, docs){
-        console.log(docs.options)
+      var pollsColl = db.collection('polls')
+      console.log(pollName)
+      pollsColl.find({name: pollName}, {options: 1}).toArray(function(err, docs){
+        console.log(docs)
         res.writeHead(200, {'content-type': 'application/json'})
-        res.end(JSON.stringify(docs.options))
+        res.end(JSON.stringify(docs[0].options))
       })
     })
   }).catch((err) =>{

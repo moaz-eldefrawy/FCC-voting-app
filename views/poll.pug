@@ -127,15 +127,18 @@ html
           var chosenOption = $('#options').val();
         })
         
+        
+        
         // graph
         var options = [];
         $.ajax({
           url: "/polls/" + pollName + "/getOptions",
           method: "get",
-          sucess: function(data){
+          success: function(data){
             console.log("getting options ..");
             console.log(data);
-            options = data.options;
+            options = Object.keys(data);
+            console.log(options)
           },
           error: function(err){
             alert("sorry an error happend when trying to get the poll options");     
@@ -155,7 +158,7 @@ html
         var myChart = new Chart(ctx, {
           type: 'pie',
           data: {
-              labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+              labels: options,
               datasets: [{
                   label: '# of Votes',
                   data: [12, 19, 3, 5, 2, 3],
