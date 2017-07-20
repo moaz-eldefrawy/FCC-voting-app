@@ -14,7 +14,7 @@ html
     <!--[if lt IE 9]>
      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->M
+    <![endif]-->
   
   body
     - var myUrl = websiteUrl + '/polls/' + pollName;
@@ -69,7 +69,7 @@ html
           each val in polls
             option= val
         br
-        btn.btn-block.btn-primary#submitOption(padding: ) submit
+        btn.btn-block.btn-primary#submitOption(style="padding: 10px;") submit
         br
         
         
@@ -128,7 +128,10 @@ html
         
         // handling submit an option button
         $("#submitOption").click(function(){
-          console.log($('#options').val());
+          var chosenOption = $('#options').val();
+          $.ajax({
+            url: "",
+          })
         })
       
         // graph

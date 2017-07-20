@@ -112,7 +112,7 @@ app.get('/polls/:id', (req, res) => {
   })
 })
 
-// remove a poll
+// remove & add a poll
 app.post('/polls/:id', (req, res) => {
   var pollName = req.params.id;
   getUserInfo.then(function(response){ 
@@ -129,6 +129,10 @@ app.post('/polls/:id', (req, res) => {
           })
         })
       })
+    } 
+    console.log(req.query.add)
+    else if(req.query.add != undefined){
+      
     } else
       res.redirect("https://fancy-thrill.glitch.me/polls/" + pollName );
   }).catch(function(err){
