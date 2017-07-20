@@ -110,18 +110,18 @@ html
         $("#share").click(function(){
           var a = window.location.href.split('/')
           var pollName = a[ a.length - 1 ];
-          consle.log(pollName)
+          console.log(pollName)
           var width  = 575,
             height = 400,
             left   = ($(window).width()  - width)  / 2,
             top    = ($(window).height() - height) / 2,
-            url    = "http://twitter.com/share?" + pollName + " | Fcc-Voting | " + window.location.href ,
+            url    = "http://twitter.com/share?text=" + decodeURI(pollName) + " | Fcc-Voting | " + window.location.href ,
             opts   = 'status=1' +
                      ',width='  + width  +
                      ',height=' + height +
                      ',top='    + top    +
                      ',left='   + left;
-          console.log(url);
+          url = encodeURI(url)
           window.open(url, 'twitter', opts);
         })
       
