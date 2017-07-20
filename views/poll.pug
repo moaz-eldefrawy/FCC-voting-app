@@ -65,11 +65,11 @@ html
       h3= pollName
       form.form-group  
         label #[h2 #[b I'd like to vote for:]]
-        select.form-control
+        select.form-control#options
           each val in polls
             option= val
         br
-        input.btn.btn-block.btn-primary#submitOption(type="submit" value="submit")
+        btn.btn-block.btn-primary#submitOption(padding: ) submit
         br
         
         
@@ -105,7 +105,8 @@ html
               
             })
           }
-        })  
+        })
+        
         // handling share button
         $("#share").click(function(){
           var a = window.location.href.split('/')
@@ -127,7 +128,7 @@ html
         
         // handling submit an option button
         $("#submitOption").click(function(){
-          
+          console.log($('#options').val());
         })
       
         // graph
