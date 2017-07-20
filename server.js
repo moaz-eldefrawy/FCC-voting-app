@@ -242,6 +242,9 @@ app.get("/newpoll", function(req, res){
       for(var i=0; i<options.length; i++)
         optionsObj[ options[i] ] = 0;
       
+      console.log("optionsObj:");
+      console.log(optionsObj);
+      
       MongoClient.connect(dbUrl, (err, db) => {
         if(err) return console.log(err)
         // attaching the collection to the user
@@ -254,7 +257,7 @@ app.get("/newpoll", function(req, res){
             if(f1 & f2)
               resolve(123)
           })
-          pollsColl.insert({name: pollName, options: options, voters:[]}, function(){
+          pollsColl.insert({name: pollName, options: optionsObj, voters:[]}, function(){
             f2 = true;
             if(f1 & f2)
               resolve(123)
