@@ -66,7 +66,7 @@ function isAuth(url){
       var usersColl = db.collection("verifiedUsers");
       usersColl.find({url: url}).toArray(function(err, docs){   
         db.close()
-        console.log(docs)
+        //console.log(docs)
         if(!docs.length)
           resolve([{url: 'not found'}])
           
@@ -128,6 +128,7 @@ app.post('/polls/:id', (req, res) => {
           key = response.userName;
         
         pollsColl.find({voter: {$in: [key]}}, function(err, data){
+          console.log('finding if the user voted beofre:')
           console.log(err);
           console.log(data);
         })
@@ -142,11 +143,12 @@ app.post('/polls/:id', (req, res) => {
         if(err) return console.log("Unable to connecto to MongoDb");
         var pollsColl = db.collection('polls');
         pollsColl.remove({name: pollName}, function(data){
-          console.log(data)
+          console.log('data:')
           var usersColl = db.collection('verifiedUsers')
           usersColl.update({}, {$pull: {polls: pollName} }, function(){
             db.close();
-            res.redirect('https://fancy-thrill.glitch.me');
+            console.log('redirecting')
+            res.end('redirect');
           })
         })
       })
