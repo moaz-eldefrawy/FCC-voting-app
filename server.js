@@ -117,6 +117,7 @@ app.post('/polls/:id', (req, res) => {
   var pollName = req.params.id;
   getUserInfo.then(function(response){ 
     console.log(pollName)
+    console.log(req.query.add)
     if(req.query.remove == 1){
       MongoClient.connect(dbUrl, function(err, db){
         if(err) return console.log("Unable to connecto to MongoDb");
@@ -130,8 +131,15 @@ app.post('/polls/:id', (req, res) => {
         })
       })
     } 
-    console.log(req.query.add)
     else if(req.query.add != undefined){
+      // chec
+        if(1){
+        MongoClient.connect(dbUrl, function(err, db){
+          if(err) return console.log("Unable to connecto to MongoDb");
+          var pollsColl = db.collection('polls');
+          pollsColl.update({name: pollName}, {$push: {options: req.query.add}})
+          })
+        }
       
     } else
       res.redirect("https://fancy-thrill.glitch.me/polls/" + pollName );
