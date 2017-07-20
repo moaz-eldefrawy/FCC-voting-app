@@ -129,22 +129,26 @@ html
         
         
         
-        // graph
+        // getting poll options
         var options = [];
-        $.ajax({
-          url: "/polls/" + pollName + "/getOptions",
-          method: "get",
-          success: function(data){
-            console.log("getting options ..");
-            console.log(data);
-            options = Object.keys(data);
-            console.log(options)
-          },
-          error: function(err){
-            alert("sorry an error happend when trying to get the poll options");     
-          }
-        })
         
+            $.ajax({
+              url: "/polls/" + pollName + "/getOptions",
+              method: "get",
+              success: function(data){
+                console.log("getting options ..");
+                console.log(data);
+                options = Object.keys(data);
+                console.log(options)
+                renderGraph()
+              },
+              error: function(err){
+                alert("sorry an error happend when trying to get the poll options");  
+                resolve(true)
+              }
+            })
+          
+        // getting random colors
         var usedColors = [];
         function generateRandomColor(){
           var r = Math.floor(Math.random()*254),
@@ -154,32 +158,34 @@ html
           var color = "rgba(" + r + ", " + g + ", " + b + ", " + opacity + ")";
           return color.toString();111
         }
-        var ctx = document.getElementById("myChart").getContext('2d');
-        var myChart = new Chart(ctx, {
-          type: 'pie',
-          data: {
-              labels: options,
-              datasets: [{
-                  label: '# of Votes',
-                  data: [12, 19, 3, 5, 2, 3],
-                  backgroundColor: [
-                    generateRandomColor(),
-                    generateRandomColor(),
-                    generateRandomColor(),
-                    generateRandomColor(),
-                    generateRandomColor(),
-                    generateRandomColor(),
-
-                  ],
-
-              }]
-          },
-          options: {
-            maintainAspectRatio: false
-          } 
-        })
         
-  
+        // setting up the graph
+        function renderGraph(){  
+          var ctx = document.getElementById("myChart").getContext('2d');
+          var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: options,
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                      generateRandomColor(),
+                      generateRandomColor(),
+                      generateRandomColor(),
+                      generateRandomColor(),
+                      generateRandomColor(),
+                      generateRandomColor(),
+
+                    ],
+
+                }]
+            },
+            options: {
+              maintainAspectRatio: false
+            } 
+          })
+        }
   .container
   h5(style="text-align:center") #[b This "fcc-voting" app is built by #[a(href="https://github.com/moaz-eldefrawy", target="_blank") Moaz ELdefrawy]] 
   
