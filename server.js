@@ -136,19 +136,19 @@ app.post('/polls/:id', (req, res) => {
         //callback()
       })
     }
-    console.log(pollName)
+    console.log(pollName +'.')
     console.log(req.query)
     if(req.query.remove == 1){
       MongoClient.connect(dbUrl, function(err, db){
         if(err) return console.log("Unable to connecto to MongoDb");
         var pollsColl = db.collection('polls');
+
         pollsColl.remove({name: pollName}, function(data){
           console.log('data:')
           var usersColl = db.collection('verifiedUsers')
           usersColl.update({}, {$pull: {polls: pollName} }, function(){
             db.close();
-            console.log('redirecting')
-            res.redirect('https://fancy-thrill.glitch.me');
+            res.redirect('redirect');
           })
         })
       })
