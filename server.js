@@ -123,7 +123,11 @@ app.post('/polls/:id', (req, res) => {
       MongoClient.connect(dbUrl, function(err, db){
         if(err) return console.log('Unable to connect to MongoDB');
         var pollsColl = db.collection('polls');
-        var key = 
+        var key = ip;
+        if(response.userAuth)
+          key = response.userName;
+        
+        var
         pollsColl.find({})
         
         callback()
@@ -229,9 +233,15 @@ app.get("/newpoll", function(req, res){
       res.render('newpoll', response)
     }
     else{
-      console.log(' a poll made!! ')
+      //console.log(' a poll made!! ')
       var options = req.query.options.split('\n');
       var pollName = req.query.name;
+      
+      // seting the options object
+      var optionsObj = {};
+      for(var i=0; i<options.length; i++)
+        optionsObj[ options[i] ] = 0;
+      
       MongoClient.connect(dbUrl, (err, db) => {
         if(err) return console.log(err)
         // attaching the collection to the user
