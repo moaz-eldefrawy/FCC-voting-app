@@ -79,7 +79,7 @@ html
             input.btn.btn-primary(type="submit", value="add", style="float: left;padding: 2px 10px" ) 
         
         br
-        .btn.btn-info.btn-block #[a(href="" share on twitter
+        .btn.btn-info.btn-block#share share on twitter
         br
     .col-md-8(style="text-align: center;")
       canvas.center-block#myChart(width='400', height='400', style='max-width: 500px; max-height: 500px;')
@@ -106,6 +106,24 @@ html
             })
           }
         })  
+        
+        $("#share").click(function(){
+          var a = window.location.href.split('/')
+          var pollName = a[ a.length - 1 ];
+          consle.log(pollName)
+          var width  = 575,
+            height = 400,
+            left   = ($(window).width()  - width)  / 2,
+            top    = ($(window).height() - height) / 2,
+            url    = "http://twitter.com/share?" + pollName + " | Fcc-Voting | " + window.location.href ,
+            opts   = 'status=1' +
+                     ',width='  + width  +
+                     ',height=' + height +
+                     ',top='    + top    +
+                     ',left='   + left;
+          console.log(url);
+          window.open(url, 'twitter', opts);
+        })
       
         // graph
         var usedColors = [];
@@ -115,7 +133,7 @@ html
           b = Math.floor(Math.random()*254),
           opacity = Math.random()
           var color = "rgba(" + r + ", " + g + ", " + b + ", " + opacity + ")";
-          return color.toString();
+          return color.toString();111
         }
         var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {
