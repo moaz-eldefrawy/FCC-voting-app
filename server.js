@@ -117,17 +117,18 @@ app.post('/polls/:id', (req, res) => {
   var pollName = req.params.id;
   var ip = req.headers['x-forwarded-for'].split(',')[0];
   
-  function checkIfUserSubmitiedBefore(callback){
-      
-    MongoClient.connect(dbUrl, function(err, db){
-     if(err) return console.log('Unable to connect to MongoDB');
-      var pollsColl = db.collection('polls');
-      pollsColl.update({name: pollName}, {})
-    })
-    callback()
-  }
   
   getUserInfo.then(function(response){ 
+    function checkIfUserSubmitiedBefore(callback){
+      MongoClient.connect(dbUrl, function(err, db){
+        if(err) return console.log('Unable to connect to MongoDB');
+        var pollsColl = db.collection('polls');
+        var key = 
+        pollsColl.find({})
+        
+        callback()
+      })
+    }
     console.log(pollName)
     console.log(req.query.choose)
     if(req.query.remove == 1){
