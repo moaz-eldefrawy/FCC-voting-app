@@ -103,10 +103,10 @@ html
           }
         })
         
+        var a = window.location.href.split('/')
+        var pollName = a[ a.length - 1 ];
         // handling share button
         $("#share").click(function(){
-          var a = window.location.href.split('/')
-          var pollName = a[ a.length - 1 ];
           console.log(pollName)
           var width  = 575,
             height = 400,
@@ -127,18 +127,19 @@ html
           var chosenOption = $('#options').val();
         })
         
-      
         // graph
         var options = [];
         $.ajax({
-          url:"/polls/" + pollName + "/getOptions",
+          url: "/polls/" + pollName + "/getOptions",
           method: "get",
-          success: funciton(data) {
+          sucess: function(data){
+            console.log("getting options ..");
+            console.log(data);
             options = data;
           },
           error: function(err){
-            alert("sorry an error happend: \n" + err);
-          }          get:
+            alert("sorry an error happend: \n" + err);     
+          }
         })
         
         var usedColors = [];
@@ -151,30 +152,29 @@ html
           return color.toString();111
         }
         var ctx = document.getElementById("myChart").getContext('2d');
-      var myChart = new Chart(ctx, {
+        var myChart = new Chart(ctx, {
           type: 'pie',
-        data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                  generateRandomColor(),
-                  generateRandomColor(),
-                  generateRandomColor(),
-                  generateRandomColor(),
-                  generateRandomColor(),
-                  generateRandomColor(),
+          data: {
+              labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+              datasets: [{
+                  label: '# of Votes',
+                  data: [12, 19, 3, 5, 2, 3],
+                  backgroundColor: [
+                    generateRandomColor(),
+                    generateRandomColor(),
+                    generateRandomColor(),
+                    generateRandomColor(),
+                    generateRandomColor(),
+                    generateRandomColor(),
 
-                ],
+                  ],
 
-            }]
-        },
-        options: {
-      maintainAspectRatio: false,
-		}
-
-
+              }]
+          },
+          options: {
+            maintainAspectRatio: false
+          } 
+        })
         
   
   .container

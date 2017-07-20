@@ -119,9 +119,8 @@ app.get('/polls/:id/getOptions', function(req, res){
   getUserInfo.then(function(response){
     MongoClient.connect(dbUrl, function(err, db){
       db.collection('polls').find({name: pollName}, {options: 1}, function(err, docs){
-        response["options"] = docs.options;
-        console.log(response)
-        res.render('poll', response)
+        console.log(docs.options)
+        res.send(docs.options)
       })
     })
   }).catch((err) =>{
