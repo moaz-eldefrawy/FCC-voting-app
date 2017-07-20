@@ -135,10 +135,10 @@ html
           sucess: function(data){
             console.log("getting options ..");
             console.log(data);
-            options = data;
+            options = data.options;
           },
           error: function(err){
-            alert("sorry an error happend: \n" + err);     
+            alert("sorry an error happend when trying to get the poll options");     
           }
         })
         

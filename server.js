@@ -120,7 +120,8 @@ app.get('/polls/:id/getOptions', function(req, res){
     MongoClient.connect(dbUrl, function(err, db){
       db.collection('polls').find({name: pollName}, {options: 1}, function(err, docs){
         console.log(docs.options)
-        res.send(docs.options)
+        res.writeHead(200, {'content-type': 'application/json'})
+        res.end(JSON.stringify(docs.options))
       })
     })
   }).catch((err) =>{
