@@ -127,10 +127,12 @@ app.post('/polls/:id', (req, res) => {
         if(response.userAuth)
           key = response.userName;
         
-        var
-        pollsColl.find({})
+        pollsColl.find({voter: {$in: [key]}}, function(err, data){
+          console.log(err);
+          console.log(data);
+        })
         
-        callback()
+        //callback()
       })
     }
     console.log(pollName)
