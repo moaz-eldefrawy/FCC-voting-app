@@ -73,7 +73,7 @@
       console.log(data);
       options = Object.keys(data);
       options.forEach(function(val){
-        console.log(val)
+        console.log(data[val])
          votesValues.push(data[val]);
       })
       console.log("votesValues:");
