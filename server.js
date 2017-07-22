@@ -138,8 +138,7 @@ app.post('/polls/:id', (req, res) => {
   
   
   getUserInfo.then(function(response){ 
-    function checkIfUserSubmitiedBefore(callback){
-      MongoClient.connect(dbUrl, function(err, db){
+    function checkIfUserSubmitiedBefore(err, db){
         if(err) return console.log('Unable to connect to MongoDB');
         var pollsColl = db.collection('polls');
         var key = ip;
@@ -158,7 +157,6 @@ app.post('/polls/:id', (req, res) => {
           }
         })
         //callback()
-      })
     }
     console.log(pollName +'...')
     console.log(req.query)
@@ -181,12 +179,14 @@ app.post('/polls/:id', (req, res) => {
     else if( ("choose" in req.query) ){
       console.log('an option is chosen')
       // check if the user has submiited an option before
-      var didUserSubmit = checkIfUserSubmitiedBefore()
       
       MongoClient.connect(dbUrl, function(err, db){
-        if(err) return console.log("Unable to connecto to MongoDb");
-        var pollsColl = db.collection('polls');
-        pollsColl.update({name: pollName}, {$push: {options: req.query.add}})
+          checkIfUserSubmitiedBefore(err, db)
+          if(err) return console.log("Unable to connecto to MongoDb");
+          var pollsColl = db.collection('polls');
+          pollsColl.update( {name: pollName}, {$inc: {"options.total": 1, ["options."+req.query.choose] : 1} })
+          pollsColl.update( {name: pollName}, {$push: {} })
+        
       })
         
     } else
