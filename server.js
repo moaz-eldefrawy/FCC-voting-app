@@ -146,8 +146,10 @@ app.post('/polls/:id', (req, res) => {
         if(response.userAuth)
           key = response.userName;
         
-        pollsColl.find({voter: {$in: [key]}}, function(err, data){
-          console.log(data);
+        pollsColl.find( {  } ).toArray(function(err, data){
+          if(data.length){
+            pollsColl.update( {voter: {$in: [key]}}, {$inc: {}} )
+          }
         })
         
         //callback()
