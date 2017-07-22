@@ -145,13 +145,10 @@ app.post('/polls/:id', (req, res) => {
         var key = ip;
         if(response.userAuth)
           key = response.userName;
-        
-        pollsColl.find( {  } ).toArray(function(err, data){
-          if(data.length){
-            pollsColl.update( {voter: {$in: [key]}}, {$inc: {}} )
-          }
+      
+        pollsColl.update( {name: pollName}, {$inc: {"options.total": -1, ["voters."+req.query.choose] : -1} }, function(err){
+           console.log( err || "voting is set to default");  
         })
-        
         //callback()
       })
     }
@@ -178,14 +175,12 @@ app.post('/polls/:id', (req, res) => {
       // check if the user has submiited an option before
       var didUserSubmit = checkIfUserSubmitiedBefore()
       
-        if(0){
-        MongoClient.connect(dbUrl, function(err, db){
-          if(err) return console.log("Unable to connecto to MongoDb");
-          var pollsColl = db.collection('polls');
-          pollsColl.update({name: pollName}, {$push: {options: req.query.add}})
-          })
-        }
-      
+      MongoClient.connect(dbUrl, function(err, db){
+        if(err) return console.log("Unable to connecto to MongoDb");
+        var pollsColl = db.collection('polls');
+        pollsColl.update({name: pollName}, {$push: {options: req.query.add}})
+      })
+        
     } else
       res.redirect("https://fancy-thrill.glitch.me/polls/" + pollName );
   }).catch(function(err){
