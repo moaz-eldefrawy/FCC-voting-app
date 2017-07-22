@@ -62,7 +62,8 @@
 
 
   // getting poll options
-  var options = [];
+  var options = [],
+      votesValues = [];
 
   $.ajax({
     url: "/polls/" + pollName + "/getOptions",
@@ -71,7 +72,12 @@
       console.log("getting options ..");
       console.log(data);
       options = Object.keys(data);
-      console.log(options)
+      options.forEach(function(val){
+        console.log(val)
+         votesValues.push(data[val]);
+      })
+      console.log("votesValues:");
+      console.log(votesValues);
       renderGraph()
       renderSelectOptions()
     },
@@ -100,7 +106,7 @@
           labels: options,
           datasets: [{
               label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
+              data: votesValues,
               backgroundColor: [
                 generateRandomColor(),
                 generateRandomColor(),
