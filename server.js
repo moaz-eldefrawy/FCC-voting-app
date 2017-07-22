@@ -146,7 +146,12 @@ app.post('/polls/:id', (req, res) => {
         if(response.userAuth)
           key = response.userName;
       
-        pollsColl.update( {name: pollName}, {$inc: {"options.total": -1, ["voters."+req.query.choose] : -1} }, function(err){
+        pollsColl.find({name: pollName}, {voters: 1}).toArray(function(err, docs){
+          if( docs[0].key != undefin ){
+            
+          }
+        })
+        pollsColl.update( {["voters."+key]: req.query.choose}, {$inc: {"options.total": -1, ["voters."+req.query.choose] : -1} }, function(err){
            console.log( err || "voting is set to default");  
         })
         //callback()
