@@ -125,8 +125,10 @@ html
         // handling submit an option button
         $("#submitOption").click(function(){
           var chosenOption = $('#options').val();
+          var url = url: "https://fancy-thrill.glitch.me/" + pollName + "/add=" + $("#options").val();
+          console.log(url)
           $.ajax({
-            url: "https://fancy-thrill.glitch.me/" + pollName
+            url: "https://fancy-thrill.glitch.me/" + pollName + "?add=" + $("#options").val();
             method: "post",
             success: function(){
               
