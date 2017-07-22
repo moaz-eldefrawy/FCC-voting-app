@@ -53,7 +53,12 @@
 
   
   // fil select element with options
-  function renderSelectOptions
+  function renderSelectOptions(){
+    options.forEach((el, i) => {
+      var option = "<option>" + el + "</option>";
+      $('#options').append(option);   
+    })
+  }
 
 
   // getting poll options
