@@ -147,12 +147,15 @@ app.post('/polls/:id', (req, res) => {
           key = response.userName;
       
         pollsColl.find({name: pollName}, {voters: 1}).toArray(function(err, docs){
-          if( docs[0].key != undefin ){
-            
+          console.log(docs)
+          if( docs[0].key != undefined ){ // if the key (person OR ipAddress) exists 
+            var pastVote = docs[0].key;
+            pollsColl.update( {name: pollName}, {$inc: {"options.total": -1, ["options."+pastVote] : -1} }, function(err){
+               console.log( err || "voting is set to default");  
+            })
+          } else {
+            console.log("user didn't vote before")
           }
-        })
-        pollsColl.update( {["voters."+key]: req.query.choose}, {$inc: {"options.total": -1, ["voters."+req.query.choose] : -1} }, function(err){
-           console.log( err || "voting is set to default");  
         })
         //callback()
       })
