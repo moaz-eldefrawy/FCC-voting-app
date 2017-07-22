@@ -147,8 +147,6 @@ app.post('/polls/:id', (req, res) => {
           key = response.userName;
         
         pollsColl.find({voter: {$in: [key]}}, function(err, data){
-          console.log('finding if the user voted beofre:')
-          console.log(err);
           console.log(data);
         })
         
