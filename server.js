@@ -173,12 +173,12 @@ app.post('/polls/:id', (req, res) => {
       })
     } 
     // handling user choosing an option to vote for
-    else if( !("choose" in req.query) ){
+    else if( ("choose" in req.query) ){
       console.log('an option is chosen')
       // check if the user has submiited an option before
       var didUserSubmit = checkIfUserSubmitiedBefore()
       
-        if(1){
+        if(0){
         MongoClient.connect(dbUrl, function(err, db){
           if(err) return console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');
@@ -280,7 +280,7 @@ app.get("/newpoll", function(req, res){
             if(f1 & f2)
               resolve(123)
           })
-          pollsColl.insert({name: pollName, options: optionsObj, voters:[]}, function(){
+          pollsColl.insert({name: pollName, options: optionsObj, voters: {}}, function(){
             f2 = true;
             if(f1 & f2)
               resolve(123)
