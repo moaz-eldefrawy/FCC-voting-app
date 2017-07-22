@@ -149,8 +149,9 @@ app.post('/polls/:id', (req, res) => {
         pollsColl.find({name: pollName}, {voters: 1}).toArray(function(err, docs){
           console.log(docs)
           console.log()
-          if( docs[0].voters.key != undefined ){ // if the key (person OR ipAddress) exists 
-            var pastVote = docs[0].voters.key;
+          console.log(key)
+          if( docs[0].voters[key] != undefined ){ // if the key (person OR ipAddress) exists 
+            var pastVote = docs[0].voters[key];
             pollsColl.update( {name: pollName}, {$inc: {["options."+pastVote] : -1} }, function(err){
                console.log( err || "voting is set to default");  
             })
