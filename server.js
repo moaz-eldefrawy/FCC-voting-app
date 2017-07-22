@@ -173,7 +173,8 @@ app.post('/polls/:id', (req, res) => {
       })
     } 
     // handling user choosing an option to vote for
-    else if(req.query.choose != undefined){
+    else if( !("choose" in req.query) ){
+      console.log('an option is chosen')
       // check if the user has submiited an option before
       var didUserSubmit = checkIfUserSubmitiedBefore()
       
