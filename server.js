@@ -270,7 +270,7 @@ app.get("/newpoll", function(req, res){
       for(var i=0; i<options.length; i++){
         var a= options[i];
         console.log(a + '.');
-        while(a.split('')[a.length-1] == ' '|| a.split('')[a.length-1] == "/r" || a.split('')[a.length-1] == 'r' || a.split('')[a.length-1] == '/'){
+        while(a.split('')[a.length-1] == ' '|| a.split('')[a.length-1] == ''){
           a = a.substring(0, a.length-1);
           console.log(a+ ".");
         }  
