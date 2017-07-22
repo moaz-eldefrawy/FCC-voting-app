@@ -37,39 +37,43 @@
   // handling submit an option button
   $("#submitOption").click(function(){
     var chosenOption = $('#options').val();
-    var url = "https://fancy-thrill.glitch.me/" + pollName + "/add=" + $("#options").val();
+    var url = "https://fancy-thrill.glitch.me/polls/" + pollName + "?choose=" + $("#options").val();
     console.log(url)
     $.ajax({
-      url: "https://fancy-thrill.glitch.me/" + pollName + "?add=" + $("#options").val(),
+      url: url,
       method: "post",
       success: function(){
-
+        console.log("option submitted");
       },
       error: function(){
-
+        console.log("couldn't submit an option")
       }
     })
   })
 
+  
+  // fil select element with options
+  function renderSelectOptions
 
 
   // getting poll options
   var options = [];
 
-      $.ajax({
-        url: "/polls/" + pollName + "/getOptions",
-        method: "get",
-        success: function(data){
-          console.log("getting options ..");
-          console.log(data);
-          options = Object.keys(data);
-          console.log(options)
-          renderGraph()
-        },
-        error: function(err){
-          alert("sorry an error happend when trying to get the poll options");  
-        }
-      })
+  $.ajax({
+    url: "/polls/" + pollName + "/getOptions",
+    method: "get",
+    success: function(data){
+      console.log("getting options ..");
+      console.log(data);
+      options = Object.keys(data);
+      console.log(options)
+      renderGraph()
+      renderSelectOptions()
+    },
+    error: function(err){
+      alert("sorry an error happend when trying to get the poll options");  
+    }
+  })
 
   // getting random colors
   var usedColors = [];

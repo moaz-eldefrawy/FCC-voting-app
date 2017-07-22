@@ -155,7 +155,7 @@ app.post('/polls/:id', (req, res) => {
         //callback()
       })
     }
-    console.log(pollName +'.')
+    console.log(pollName +'...')
     console.log(req.query)
     if(req.query.remove == 1){
       MongoClient.connect(dbUrl, function(err, db){
