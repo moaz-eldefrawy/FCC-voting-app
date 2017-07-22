@@ -268,8 +268,11 @@ app.get("/newpoll", function(req, res){
       // seting the options object
       var optionsObj = {};
       for(var i=0; i<options.length; i++){
-        if(options[i].split('')[options[i].length-1] == ' ')
-          options[i] = options[i].
+        console.log(options[i].split('')[options[i].length-1]);
+        while(options[i].split('')[options[i].length-1] == ' ')
+          options[i] = options[i].substring(0, options[i].length-1);
+        console.log(options[i]+ ".");
+        
         optionsObj[ options[i] ] = 1;
       }
       console.log("optionsObj:");
