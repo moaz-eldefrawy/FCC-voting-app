@@ -138,18 +138,20 @@ app.post('/polls/:id', (req, res) => {
   
   
   getUserInfo.then(function(response){ 
-    function checkIfUserSubmitiedBefore(err, db){
+    var key = ip;
+    if(response.userAuth)
+      key = response.userName;
+    function handleIfUserSubmitiedBefore(err, db){
         if(err) return console.log('Unable to connect to MongoDB');
         var pollsColl = db.collection('polls');
-        var key = ip;
-        if(response.userAuth)
-          key = response.userName;
+        
       
         pollsColl.find({name: pollName}, {voters: 1}).toArray(function(err, docs){
           console.log(docs)
-          if( docs[0].key != undefined ){ // if the key (person OR ipAddress) exists 
-            var pastVote = docs[0].key;
-            pollsColl.update( {name: pollName}, {$inc: {"options.total": -1, ["options."+pastVote] : -1} }, function(err){
+          console.log()
+          if( docs[0].voters.key != undefined ){ // if the key (person OR ipAddress) exists 
+            var pastVote = docs[0].voters.key;
+            pollsColl.update( {name: pollName}, {$inc: {["options."+pastVote] : -1} }, function(err){
                console.log( err || "voting is set to default");  
             })
           } else {
@@ -181,12 +183,11 @@ app.post('/polls/:id', (req, res) => {
       // check if the user has submiited an option before
       
       MongoClient.connect(dbUrl, function(err, db){
-          checkIfUserSubmitiedBefore(err, db)
+          handleIfUserSubmitiedBefore(err, db)
           if(err) return console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');
-          pollsColl.update( {name: pollName}, {$inc: {"options.total": 1, ["options."+req.query.choose] : 1} })
-          pollsColl.update( {name: pollName}, {$push: {} })
-        
+          pollsColl.update( {name: pollName}, {$inc: {["options."+req.query.choose] : 1} })
+          pollsColl.update( {name: pollName}, {$set: {['voters.'+key]: req.query.choose} })
       })
         
     } else
