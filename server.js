@@ -140,7 +140,7 @@ app.post('/polls/:id', (req, res) => {
   getUserInfo.then(function(response){ 
     var key = ip;
     if(response.userAuth)
-      key = response.userName;
+      key = response.userNameز;
     function handleIfUserSubmitiedBefore(err, db){
         if(err) return console.log('Unable to connect to MongoDB');
         var pollsColl = db.collection('polls');
@@ -188,7 +188,7 @@ app.post('/polls/:id', (req, res) => {
           if(err) return console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');
           pollsColl.update( {name: pollName}, {$inc: {["options."+req.query.choose] : 1} })
-          pollsColl.update( {name: pollName}, {$set: {['voters.'+key]: req.query.choose} })
+          pollsColl.update( {name: pollName}, {$set: {["voter" + key.toString()]: req.query.choose} })
       })
         
     } else
