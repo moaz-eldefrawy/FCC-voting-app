@@ -268,17 +268,9 @@ app.get("/newpoll", function(req, res){
       // seting the options object
       var optionsObj = {};
       for(var i=0; i<options.length; i++){
-        var a= options[i];
-        console.log(a + '.');
-        while(a.split('')[a.length-1] == ' '|| a.split('')[a.length-1] == ''){
-          a = a.substring(0, a.length-1);
-          console.log(a+ ".");
-        }  
-        
-        optionsObj[ a ] = 1;
+        options[i] = options[i].replace(/\s+/g, ' ').trim();
+        optionsObj[ options[i] ] = 1;
       }
-      console.log("optionsObj:");
-      console.log(optionsObj);
       
       MongoClient.connect(dbUrl, (err, db) => {
         if(err) return console.log(err)
