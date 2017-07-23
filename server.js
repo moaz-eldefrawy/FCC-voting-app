@@ -206,7 +206,20 @@ app.post('/polls/:id', (req, res) => {
           })
       })
         
-    } else
+    } else if( ("add" in req.query) ){
+      console.log("an options is added");
+      console.log(req.query.add)
+      MongoClient.connect(dbUrl, function(err, db){
+        if(err) return console.log("Unable to connection to MongoDb");
+        var pollsColl = db.collection('polls');
+        pollsColl.update( {name: pollName}, {$set: {["options."+req.query.add] : 1}}, ()=>{
+          db.close();
+          res.end();
+        } )
+      })
+    }
+    
+    else
       res.redirect("https://fancy-thrill.glitch.me/polls/" + pollName );
   }).catch(function(err){
     res.end("erro" + err);

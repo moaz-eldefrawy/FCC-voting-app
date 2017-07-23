@@ -37,14 +37,14 @@
   //hadnling addomg an option
   $("#addOption").click(function(){
     $.ajax({
-      url: "https://fancy-thrill.glitch.me/polls/" + pollName + "?add=" + $("#options").val(),
+      url: "https://fancy-thrill.glitch.me/polls/" + pollName + "?add=" + $("#addedVote").val(),
       method: "post",
       success: function(){
         console.log('success');
         location.reload()
       },
       error: function(){
-        
+        alert("Sorry, an error happened!!")
       }
     })
   })
