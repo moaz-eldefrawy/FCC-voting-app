@@ -52,7 +52,7 @@
   // handling submit an option button
   $("#submitOption").click(function(){
     var chosenOption = $('#options').val();
-    var url = "https://fancy-thrill.glitch.me/polls/" + pollName + "?choose=" + $("#addedVote").val();
+    var url = "https://fancy-thrill.glitch.me/polls/" + pollName + "?choose=" + $("#options").val();
     console.log(url)
     $.ajax({
       url: url,
