@@ -43,10 +43,10 @@
       url: url,
       method: "post",
       success: function(){
-        console.log("option submitted");
+        location.reload()
       },
       error: function(){
-        console.log("couldn't submit an option")
+        alert("Sorry, an error happened!!")
       }
     })
   })

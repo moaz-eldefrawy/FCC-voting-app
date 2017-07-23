@@ -188,7 +188,7 @@ app.post('/polls/:id', (req, res) => {
           var pollsColl = db.collection('polls');
           console.log(key);
           pollsColl.update( {name: pollName}, {$inc: {["options."+req.query.choose] : 1} })
-          pollsColl.update( {name: pollName}, {$set: {["voter."+key]: req.query.choose} })
+          pollsColl.update( {name: pollName}, {$set: {["voters."+key]: req.query.choose} })
       })
         
     } else
@@ -211,7 +211,7 @@ function renderHomepage(req, res){
             pollsNames.push(docs[i].name);
           }
 
-          response.pollsNames = pollsNames;
+          response.pollsNames = pollsNames.reverse();
           res.render('index', response)
         })
       })
