@@ -34,15 +34,31 @@
     window.open(url, 'twitter', opts);
   })
 
+  //hadnling addomg an option
+  $("#addOption").click(function(){
+    $.ajax({
+      url: "https://fancy-thrill.glitch.me/polls/" + pollName + "?add=" + $("#options").val(),
+      method: "post",
+      success: function(){
+        console.log('success');
+        location.reload()
+      },
+      error: function(){
+        
+      }
+    })
+  })
+
   // handling submit an option button
   $("#submitOption").click(function(){
     var chosenOption = $('#options').val();
-    var url = "https://fancy-thrill.glitch.me/polls/" + pollName + "?choose=" + $("#options").val();
+    var url = "https://fancy-thrill.glitch.me/polls/" + pollName + "?choose=" + $("#addedVote").val();
     console.log(url)
     $.ajax({
       url: url,
       method: "post",
       success: function(){
+        console.log("success")
         location.reload()
       },
       error: function(){

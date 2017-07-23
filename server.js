@@ -135,7 +135,7 @@ app.get('/polls/:id/getOptions', function(req, res){
 app.post('/polls/:id', (req, res) => {
   var pollName = req.params.id;
   var ip = req.headers['x-forwarded-for'].split(',')[0];
-  
+  var f1=false,f2=false,f3=false;
   
   getUserInfo.then(function(response){ 
     var key = ip.split('.').join("");
@@ -153,9 +153,15 @@ app.post('/polls/:id', (req, res) => {
             var pastVote = docs[0].voters[key];
             pollsColl.update( {name: pollName}, {$inc: {["options."+pastVote] : -1} }, function(err){
                console.log( err || "voting is set to default");  
+              f1 = true  
+              if(f1 & f2 & f3)
+                  res.end()
             })
           } else {
-            console.log("user didn't vote before")
+            console.log("user didn't vote before");
+            f1 = true  
+              if(f1 & f2 & f3)
+                  res.end()
           }
         })
         //callback()
@@ -187,8 +193,17 @@ app.post('/polls/:id', (req, res) => {
           if(err) return console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');
           console.log(key);
-          pollsColl.update( {name: pollName}, {$inc: {["options."+req.query.choose] : 1} })
-          pollsColl.update( {name: pollName}, {$set: {["voters."+key]: req.query.choose} })
+          pollsColl.update( {name: pollName}, {$inc: {["options."+req.query.choose] : 1} }, () => {
+            f2 = true  
+            console.log(f1)
+              if(f1 & f2 & f3)
+                  res.end()
+          })
+          pollsColl.update( {name: pollName}, {$set: {["voters."+key]: req.query.choose} }, () => {
+            f3 = true  
+              if(f1 & f2 & f3)
+                  res.end()
+          })
       })
         
     } else

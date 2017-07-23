@@ -69,10 +69,11 @@ html
         
         
         if userAuth 
-          form.form-group.row(action=myUrl)
-            input.col-xs-8(type="text", name="newOption", placeholder="add a new option ...")
-            input.btn.btn-primary#addOption(type="submit", value="add", style="float: left;padding: 2px 10px" ) 
+            input.col-xs-8(id="addedVote", type="text", name="newOption", placeholder="add a new option ...")
+            input.btn.btn-primary#addOption(type="button", value="add", style="float: left;padding: 2px 10px" ) 
         
+        br
+        br
         br
         .btn.btn-info.btn-block#share share on twitter
         br
