@@ -138,9 +138,9 @@ app.post('/polls/:id', (req, res) => {
   
   
   getUserInfo.then(function(response){ 
-    var key = ip;
+    var key = ip.split('.').join("");
     if(response.userAuth)
-      key = response.userNameز;
+      key = response.userName;
     function handleIfUserSubmitiedBefore(err, db){
         if(err) return console.log('Unable to connect to MongoDB');
         var pollsColl = db.collection('polls');
@@ -148,7 +148,6 @@ app.post('/polls/:id', (req, res) => {
       
         pollsColl.find({name: pollName}, {voters: 1}).toArray(function(err, docs){
           console.log(docs)
-          console.log()
           console.log(key)
           if( docs[0].voters[key] != undefined ){ // if the key (person OR ipAddress) exists 
             var pastVote = docs[0].voters[key];
@@ -161,7 +160,7 @@ app.post('/polls/:id', (req, res) => {
         })
         //callback()
     }
-    console.log(pollName +'...')
+    console.log(pollName)
     console.log(req.query)
     if(req.query.remove == 1){
       MongoClient.connect(dbUrl, function(err, db){
@@ -187,8 +186,9 @@ app.post('/polls/:id', (req, res) => {
           handleIfUserSubmitiedBefore(err, db)
           if(err) return console.log("Unable to connecto to MongoDb");
           var pollsColl = db.collection('polls');
+          console.log(key);
           pollsColl.update( {name: pollName}, {$inc: {["options."+req.query.choose] : 1} })
-          pollsColl.update( {name: pollName}, {$set: {["voter" + key.toString()]: req.query.choose} })
+          pollsColl.update( {name: pollName}, {$set: {["voter."+key]: req.query.choose} })
       })
         
     } else
