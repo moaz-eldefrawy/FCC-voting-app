@@ -1,39 +1,10 @@
-- use sign in with twitter >> take the req.rul
-- pass from a page to page with userAuth on. >> req.url is true.
+<h1> FreeCodeCamp Voting-App challenge </h1>
 
-db > verifiedUsers :
-{
-  name: -- 
-  url: --
-  Mypolls: {
-    
-  }
-}
+This is a website I have made to finish a freeCodeCamp challenge. <br>
 
-Db > polls:
-{
-  PollName:
-  options: {
-    
-  }
-  voters:{
-    
-    Total: 
-  }
-  
-}
-
-signs in:
-this guy >> has this url.
-
-opens a url:
-this url, send this guy.
-
-new poll:
-this guy add a new poll
-
-my poll:
-this guys get his polls
-
-signout:
-this guy disable url
+<b>How the website works?</b> <br>
+<ul>
+<li>You can vote on any poll. </li>
+<li>You can sign in with twitter and make your own polls. </li>
+<li>You can share a poll with your friends and delete any poll. </li>
+</ul>
